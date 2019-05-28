@@ -1,6 +1,6 @@
 <template>
     <v-flex pa-5>
-        <v-btn fab color="orange lighten-2"
+        <v-btn v-on:click="func" fab color="orange lighten-2"
                class="mainBtn" large round >{{ text }}
         </v-btn>
     </v-flex>
@@ -10,7 +10,13 @@
 export default {
   name: 'mainButton',
   props: {
-    text: String
+    text: String,
+    page:String,
+  },
+  methods:{
+      func(){
+          this.$emit('changePage',this.page)
+      },
   }
 }
 </script>

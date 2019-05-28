@@ -1,6 +1,6 @@
 <template>
             <v-bottom-nav
-                    absoulte
+                    class="bottom"
                     dark
                     color="deep-orange lighten-1"
             >
@@ -26,5 +26,9 @@
 </script>
 
 <style scoped>
-
+    .bottom{
+        position:fixed;
+        height: 58px;
+        bottom: 58px;
+    }
 </style>
