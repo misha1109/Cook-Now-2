@@ -26,7 +26,7 @@
                         </v-flex >
                     </v-layout>
                 </v-container>
-                <h3 class="textSize">{{ title }}</h3>
+                <h3 >{{ title }}</h3>
             </v-card-text>
         </v-card>
 </template>
@@ -38,7 +38,7 @@
         data:function(){
             return {
                 show:false,
-                active:'#FDD835'
+                active:'#FDD835',
             }
         },
         props:{
@@ -53,7 +53,8 @@
         },
         components:{
             'ingredient-topic-grid':ingredTopGrid
-        }
+        },
+
     }
 </script>
 

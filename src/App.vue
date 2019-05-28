@@ -18,7 +18,7 @@
             </div>
             <v-container ma-0 py-5 fluid v-if="title=='Recipe List'">
                 <v-layout row wrap>
-                    <recipe-search v-on:search-recipe="findRecipes">
+                    <recipe-search v-if="recipeFreeSeach" v-on:search-recipe="findRecipes">
                     </recipe-search>
                 <v-container v-if="recipes" fluid grid-list-lg ma-2>
                 <v-layout row wrap>
@@ -31,8 +31,7 @@
                 </v-layout>
             </v-container>
             <v-container ma-0 py-5 v-if="title=='Choose ingredients'">
-                <ingredients-main>
-
+                <ingredients-main v-on:final-ingred-added = "findRecipes" v-on:changePage="changePage">
                 </ingredients-main>
             </v-container>
             <bottom-nav>
@@ -49,13 +48,15 @@ import recipeSearch from './components/recipeSearch.vue'
 import recipeCard from './components/recipeCard.vue'
 import food2fork from './foodAPI/food2forkAgent,js'
 import ingredMain from './components/ingredients-main.vue'
+import recipeList from './components/recipe-list.vue'
 
 export default {
   name: 'app',
   data :function() {
       return{
           title:"Home",
-          recipes:null
+          recipes:null,
+          recipeFreeSeach:true
       }
   },
   components: {
@@ -64,26 +65,28 @@ export default {
       'bottom-nav':bottomNavBar,
       'recipe-search':recipeSearch,
       'recipe-card':recipeCard,
-      'ingredients-main':ingredMain
+      'ingredients-main':ingredMain,
+      'recipe-list':recipeList
   },
-  methods:{
-      showList:function(){
-          this.title="Recipe List"
-      },
-      changePage:function(newPage){
-          if(newPage=='Home'){
+  methods: {
+      changePage: function (newPage,hideSearch) {
+          if (newPage == 'Home') {
               this.recipes = null
           }
-          this.title=newPage
+          if(hideSearch){
+              this.recipeFreeSeach = false
+          }
+          else
+              this.recipeFreeSeach = true
+          this.title = newPage
       },
-      findRecipes:async function(ingred){
-          console.log(ingred)
+      findRecipes: async function (ingred) {
           this.recipes = await food2fork(ingred)
       }
   }
 }
 </script>
-<style scoped>
+<style>
     .backGround{
         background-size: 100vw 100vh;
         background:repeat;

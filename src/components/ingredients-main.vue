@@ -22,7 +22,9 @@
                 </ingredients-topic>
             </v-flex>
             <v-flex>
-                <ingredients-topic title="Fruit">
+                <ingredients-topic title="Fruit"
+                   :list="ingredients.fruits"
+                >
                     <v-icon xs4>fas fa-apple-alt
                     </v-icon>
                 </ingredients-topic>
@@ -45,6 +47,7 @@
                     </v-icon>
                 </ingredients-topic>
             </v-flex>
+            <search-chosen-ingred v-on:search-chosen="searchChosen"></search-chosen-ingred>
         </v-layout>
     </v-container>
 </template>
@@ -52,21 +55,31 @@
 <script>
     import ingredTopic from "./ingredients-topic.vue"
     import ingreNames from '../assets/ingredNames.js'
+    import {eventBus} from '../main.js'
+    import searchChosen from'./search-chosen-btn'
 
     export default {
         name: "ingredients-main.vue",
         data:function(){
             return {
-                ingredients: ingreNames
+                ingredients: ingreNames,
+                ingredChosen:[]
             }
         },
         methods:{
-            click:function(){
-                console.log(1)
+            searchChosen:function () {
+                this.$emit('changePage','Recipe List',true)
+                this.$emit('final-ingred-added',this.ingredChosen)
             }
         },
         components:{
-            'ingredients-topic':ingredTopic
+            'ingredients-topic':ingredTopic,
+            'search-chosen-ingred':searchChosen
+        },
+        created(){
+            eventBus.$on('ingredAdded',(ingred) => {
+                this.ingredChosen.push(ingred)
+            })
         }
     }
 </script>
