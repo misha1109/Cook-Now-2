@@ -48,7 +48,6 @@ import recipeSearch from './components/recipeSearch.vue'
 import recipeCard from './components/recipeCard.vue'
 import food2fork from './foodAPI/food2forkAgent,js'
 import ingredMain from './components/ingredients-main.vue'
-import recipeList from './components/recipe-list.vue'
 
 export default {
   name: 'app',
@@ -66,7 +65,6 @@ export default {
       'recipe-search':recipeSearch,
       'recipe-card':recipeCard,
       'ingredients-main':ingredMain,
-      'recipe-list':recipeList
   },
   methods: {
       changePage: function (newPage,hideSearch) {
@@ -79,6 +77,7 @@ export default {
           else
               this.recipeFreeSeach = true
           this.title = newPage
+
       },
       findRecipes: async function (ingred) {
           this.recipes = await food2fork(ingred)
