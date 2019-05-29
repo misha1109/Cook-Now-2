@@ -5,6 +5,7 @@
                 <ingredients-topic
                         title="Meat & Fish"
                         :list="ingredients.meat"
+                        display="display-3"
                 >
                     <v-icon xs4>fas fa-drumstick-bite
                     </v-icon>
@@ -16,6 +17,8 @@
             <v-flex>
                 <ingredients-topic title="Vegetables"
                     :list="ingredients.vegetable"
+                     display="display-2"
+
                 >
                     <v-icon xs12>fas fa-carrot
                     </v-icon>
@@ -24,13 +27,17 @@
             <v-flex>
                 <ingredients-topic title="Fruit"
                    :list="ingredients.fruits"
+                   display="display-2"
                 >
                     <v-icon xs4>fas fa-apple-alt
                     </v-icon>
                 </ingredients-topic>
             </v-flex>
             <v-flex>
-                <ingredients-topic title="Dairy & Baking">
+                <ingredients-topic title="Dairy & Baking"
+                                   :list="ingredients.dairyBaking"
+                                   display="display-2"
+                >
                     <v-icon xs4>fas fa-cheese
                     </v-icon>
                     <span style="font-size: large">&</span>
@@ -39,7 +46,10 @@
                 </ingredients-topic>
             </v-flex>
             <v-flex>
-                <ingredients-topic title="Spices & Sauces">
+                <ingredients-topic title="Spices & Sauces"
+                                   :list="ingredients.spiceSauce"
+                                   display="display-2"
+                >
                     <v-icon xs4>fas fa-mortar-pestle
                     </v-icon>
                     <span style="font-size: large">&</span>
@@ -70,6 +80,18 @@
             searchChosen:function () {
                 this.$emit('changePage','Recipe List',true)
                 this.$emit('final-ingred-added',this.ingredChosen)
+            },
+            addIngred:function(ingred){
+                let found = this.ingredChosen.findIndex( el => {
+                    return el === ingred
+                })
+                if(found!=-1){
+                    this.ingredChosen.splice(found,1)
+                }
+                else{
+                    this.ingredChosen.push(ingred)
+                }
+                console.log(this.ingredChosen)
             }
         },
         components:{
@@ -78,9 +100,12 @@
         },
         created(){
             eventBus.$on('ingredAdded',(ingred) => {
-                this.ingredChosen.push(ingred)
+                this.addIngred(ingred)
             })
-        }
+            eventBus.$on('resetChosen', () => {
+                this.ingredChosen = []
+            })
+        },
     }
 </script>
 

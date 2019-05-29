@@ -4,7 +4,9 @@
             fixed
                color="deep-orange lighten-1">
         <v-flex pb-2 xs3 px-3>
-                <v-btn icon class="iconbgc" round>
+                <v-btn
+                        v-on:click="back"
+                        icon class="iconbgc" round>
                     <v-icon color="white">
                         fas fa-angle-double-left
                     </v-icon>
@@ -32,6 +34,9 @@
         methods:{
             home(){
                 this.$emit('changeToHome','Home')
+            },
+            back(){
+                this.$emit('back')
             }
         }
     }
