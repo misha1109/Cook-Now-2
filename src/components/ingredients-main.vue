@@ -11,7 +11,7 @@
                 <ingredients-topic
                         title="Meat & Fish"
                         :list="ingredients.meat"
-                        display="display-3"
+                        display="display-2"
                 >
                     <v-icon xs4>fas fa-drumstick-bite
                     </v-icon>
@@ -96,17 +96,16 @@
                 })
                 if(found!=-1){
                     this.ingredChosen.splice(found,1)
-                    this.snackMsg = `Removed ${ingred}`
+                    this.snackMsg = `${ingred} Removed`
                 }
                 else{
                     this.ingredChosen.push(ingred)
-                    this.snackMsg = `Added ${ingred}`
+                    this.snackMsg = `${ingred} Added`
                 }
                 this.msgToSnack = true
                 setTimeout( () => {
                     this.msgToSnack = false
                 },0)
-                console.log(this.ingredChosen)
             }
         },
         components:{

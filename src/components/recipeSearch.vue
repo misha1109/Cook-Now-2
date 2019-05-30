@@ -1,5 +1,6 @@
 <template>
     <v-text-field
+            style="top:5vh;"
             class="search"
             full-width
             large

@@ -13,7 +13,7 @@
                 title="Main"
             >
                 <div v-if="title=='Home'">
-                    <v-container ma-0 pa-0 fluid text-xs-center>
+                    <v-container ma-0 pa-0 pt-3 fluid text-xs-center>
                         <v-layout row wrap>
                             <main-button v-on:changePage="changePage" page="Recipe List" text="All recipes">
                             </main-button>
@@ -24,7 +24,7 @@
                         </v-layout>
                     </v-container>
                 </div>
-                <v-container ma-0 py-5 fluid v-if="title=='Recipe List'">
+                <v-container ma-0 py-0 fluid v-if="title=='Recipe List'">
                     <v-layout row wrap>
                         <recipe-search v-if="recipeFreeSeach" v-on:search-recipe="findRecipes">
                         </recipe-search>
@@ -34,8 +34,8 @@
                         >
                             <loading></loading>
                         </div>
-                        <v-container v-if="recipes" fluid grid-list-lg ma-2>
-                            <v-layout row wrap>
+                        <v-container ma-0 pa-0 py-5 v-if="recipes" fluid grid-list-lg>
+                            <v-layout column wrap>
                                 <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
                                     <recipe-card :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
                                     </recipe-card>
@@ -88,6 +88,7 @@ import transMenu from './components/transitions-menu.vue'
 import about from './components/about.vue'
 import userMain from './components/user-main.vue'
 import { eventBus } from './main.js'
+import mockRecipes from "./mockRecipes.js";
 
 
 export default {
@@ -161,6 +162,7 @@ export default {
               this.noRecipes = true
           }
           this.loading = false
+          // this.recipes = mockRecipes
       },
       changeTab:function(tab){
           window.scrollTo(0,0)
