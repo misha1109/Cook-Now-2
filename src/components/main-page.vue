@@ -31,11 +31,5 @@ export default {
         font-family: "Britannic Bold";
         /*opacity: 0.8;*/
     }
-    .mainBtn:hover{
-        content:'';
-        border-radius: 5px;
-        border-color: brown;
-        transition: all 0.5s ease;
-    }
 
 </style>

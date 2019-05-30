@@ -1,7 +1,9 @@
 <template>
     <v-app >
         <v-content class="backGround">
-            <nav-bar v-on:changeToHome="changePage"
+            <nav-bar
+                     v-if="tab == 'Main'"
+                     v-on:changeToHome="changePage"
                      v-on:back = "back"
                      :title="title">
             </nav-bar>
@@ -54,10 +56,9 @@
                 title="User"
                 :show="tab"
             >
-                <v-btn
-                    style="top:100px"
-                >
-                </v-btn>
+                <user-main>
+
+                </user-main>
             </trans-menu>
             <trans-menu
                 title="About"
@@ -85,6 +86,7 @@ import loading from './components/loading.vue'
 import noRecipe from './components/no-recipes.vue'
 import transMenu from './components/transitions-menu.vue'
 import about from './components/about.vue'
+import userMain from './components/user-main.vue'
 import { eventBus } from './main.js'
 
 
@@ -111,13 +113,11 @@ export default {
       'loading':loading,
       'no-recipe':noRecipe,
       'trans-menu':transMenu,
-      'about':about
+      'about':about,
+      'user-main':userMain
   },
   methods: {
       changePage: function (newPage,hideSearch) {
-          // if (newPage == 'Home') {
-          //     this.recipes = null
-          // }
           switch (newPage) {
               case'Home':
                   this.recipes = null
@@ -163,6 +163,7 @@ export default {
           this.loading = false
       },
       changeTab:function(tab){
+          window.scrollTo(0,0)
           this.tab = tab
       },
   }

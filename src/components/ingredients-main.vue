@@ -1,6 +1,12 @@
 <template>
     <v-container grid-list-xl>
         <v-layout column xs12>
+            <ingred-snackbar
+                :text="snackMsg"
+                :showMsg="msgToSnack"
+            >
+
+            </ingred-snackbar>
             <v-flex>
                 <ingredients-topic
                         title="Meat & Fish"
@@ -67,13 +73,16 @@
     import ingreNames from '../assets/ingredNames.js'
     import {eventBus} from '../main.js'
     import searchChosen from'./search-chosen-btn'
+    import ingredSnackbar from './ingred-snackbar.vue'
 
     export default {
         name: "ingredients-main.vue",
         data:function(){
             return {
                 ingredients: ingreNames,
-                ingredChosen:[]
+                ingredChosen:[],
+                snackMsg:null,
+                msgToSnack:false
             }
         },
         methods:{
@@ -81,22 +90,29 @@
                 this.$emit('changePage','Recipe List',true)
                 this.$emit('final-ingred-added',this.ingredChosen)
             },
-            addIngred:function(ingred){
+            addIngred:async function(ingred){
                 let found = this.ingredChosen.findIndex( el => {
                     return el === ingred
                 })
                 if(found!=-1){
                     this.ingredChosen.splice(found,1)
+                    this.snackMsg = `Removed ${ingred}`
                 }
                 else{
                     this.ingredChosen.push(ingred)
+                    this.snackMsg = `Added ${ingred}`
                 }
+                this.msgToSnack = true
+                setTimeout( () => {
+                    this.msgToSnack = false
+                },0)
                 console.log(this.ingredChosen)
             }
         },
         components:{
             'ingredients-topic':ingredTopic,
-            'search-chosen-ingred':searchChosen
+            'search-chosen-ingred':searchChosen,
+            'ingred-snackbar':ingredSnackbar
         },
         created(){
             eventBus.$on('ingredAdded',(ingred) => {
