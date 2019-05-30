@@ -19,38 +19,75 @@
                             </main-button>
                             <main-button v-on:changePage="changePage" page="Choose ingredients" text="Choose by ingredients">
                             </main-button>
-                            <main-button text="Add recipe">
+                            <main-button v-on:changePage="changePage" page="Add" text="Add recipe">
                             </main-button>
                         </v-layout>
                     </v-container>
                 </div>
-                <v-container ma-0 py-0 fluid v-if="title=='Recipe List'">
-                    <v-layout row wrap>
-                        <recipe-search v-if="recipeFreeSeach" v-on:search-recipe="findRecipes">
-                        </recipe-search>
-                        <div
-                                v-if="loading"
-                                class="text-xs-center"
-                        >
-                            <loading></loading>
-                        </div>
-                        <v-container ma-0 pa-0 py-5 v-if="recipes" fluid grid-list-lg>
-                            <v-layout column wrap>
-                                <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
-                                    <recipe-card :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
-                                    </recipe-card>
-                                </div>
-                            </v-layout>
-                        </v-container>
-                        <div v-if="noRecipes" v-on:click="back">
-                            <no-recipe></no-recipe>
-                        </div>
-                    </v-layout>
-                </v-container>
+                <v-scale-transition
+                        leave-absolute
+                >
+                    <div v-if="title=='Add'">
+                        <v-btn>
+                            123
+                        </v-btn>
+                    </div>
+                </v-scale-transition>
+                <v-scale-transition
+                        leave-absolute
+                >
+                    <v-container ma-0 py-0 fluid v-if="title=='Recipe List'">
+                        <v-layout row wrap>
+                            <recipe-search v-if="recipeFreeSeach" v-on:search-recipe="findRecipes">
+                            </recipe-search>
+                            <div
+                                    v-if="loading"
+                                    class="text-xs-center"
+                            >
+                                <loading></loading>
+                            </div>
+                            <v-scale-transition
+                                    leave-absolute
+                            >
+                            <v-container ma-0 pa-0 py-5 v-if="recipes" fluid grid-list-lg>
+                                <v-layout column wrap>
+                                    <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
+                                        <recipe-card :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
+                                        </recipe-card>
+                                    </div>
+                                </v-layout>
+                            </v-container>
+                            </v-scale-transition>
+                            <div v-if="noRecipes" v-on:click="back">
+                                <no-recipe>
+                                    No recipes found
+                                    <br>
+                                    Choose different ingredients
+                                </no-recipe>
+                            </div>
+                            <div v-if="apiLimit" v-on:click="changePage('Home')">
+                                <no-recipe>
+                                    Api limit reached
+                                    <br>
+                                    Try again later
+                                </no-recipe>
+                            </div>
+                        </v-layout>
+                    </v-container>
+                </v-scale-transition>
+
+                <v-scale-transition
+                        class="d-flex  transparent darken-2  white--text"
+
+                        style="transition-duration: 5000ms"
+                    leave-absolute
+                >
                 <v-container ma-0 py-5 v-if="title=='Choose ingredients'">
                     <ingredients-main v-on:final-ingred-added = "findRecipes" v-on:changePage="changePage">
                     </ingredients-main>
                 </v-container>
+                </v-scale-transition>
+
             </trans-menu>
             <trans-menu
                 title="User"
@@ -101,7 +138,8 @@ export default {
           recipeFreeSeach:true,
           loading:false,
           noRecipes:false,
-          tab:'Main'
+          tab:'Main',
+          apiLimit:false
       }
   },
   components: {
@@ -132,6 +170,7 @@ export default {
                   }
                   else
                       this.prevTitle="Home"
+                  this.recipes = []
                   this.noRecipes = false
                   break;
               case 'Choose ingredients':
@@ -145,6 +184,8 @@ export default {
           else
               this.recipeFreeSeach = true
           this.title = newPage
+          this.noRecipes = false
+          this.apiLimit = false
           window.scrollTo(0,0)
 
       },
@@ -160,6 +201,9 @@ export default {
           this.recipes = await food2fork(ingred)
           if(this.recipes.count==0){
               this.noRecipes = true
+          }
+          else if(this.recipes.error=='limit'){
+              this.apiLimit = true
           }
           this.loading = false
           // this.recipes = mockRecipes

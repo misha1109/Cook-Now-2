@@ -5,7 +5,7 @@
         <div
                 v-if="show == title"
                 class="d-flex  transparent darken-2  white--text"
-                style="transition-duration: 1000ms"
+                style="transition-duration: 700ms"
         >
             <slot>
             </slot>

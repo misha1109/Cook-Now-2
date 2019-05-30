@@ -6,9 +6,7 @@
             color="#FDD835"
     >
         <v-card-text>
-            No recipes found
-            <br>
-            Add more ingredients
+            <slot></slot>
         </v-card-text>
     </v-card>
 </template>
@@ -20,7 +18,7 @@
             back:function(){
                 this.$emit('back')
             }
-        }
+        },
     }
 </script>
 
