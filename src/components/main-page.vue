@@ -1,6 +1,6 @@
 <template>
     <v-flex pa-4>
-        <v-btn v-on:click="func" fab color="orange lighten-2"
+        <v-btn v-on:click="func" fab color="#FDD835"
                class="mainBtn" large round >{{ text }}
         </v-btn>
     </v-flex>

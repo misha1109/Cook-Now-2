@@ -15,7 +15,7 @@
                 <div v-if="title=='Home'">
                     <v-container ma-0 pa-0 pt-3 fluid text-xs-center>
                         <v-layout row wrap>
-                            <main-button v-on:changePage="changePage" page="Recipe List" text="All recipes">
+                            <main-button v-on:changePage="changePage" page="Recipe List" text="search All recipes">
                             </main-button>
                             <main-button v-on:changePage="changePage" page="Choose ingredients" text="Choose by ingredients">
                             </main-button>
@@ -28,9 +28,15 @@
                         leave-absolute
                 >
                     <div v-if="title=='Add'">
-                        <v-btn>
-                            123
-                        </v-btn>
+                        <div v-if="!signedIn" v-on:click="changeTab('User')">
+                            <v-slide-y-transition
+                                    hide-on-leave
+                            >
+                                <no-recipe >
+                                    <p>Sign in to add recipes</p>
+                                </no-recipe>
+                            </v-slide-y-transition>
+                        </div>
                     </div>
                 </v-scale-transition>
                 <v-scale-transition
@@ -78,8 +84,6 @@
 
                 <v-scale-transition
                         class="d-flex  transparent darken-2  white--text"
-
-                        style="transition-duration: 5000ms"
                     leave-absolute
                 >
                 <v-container ma-0 py-5 v-if="title=='Choose ingredients'">
@@ -90,12 +94,24 @@
 
             </trans-menu>
             <trans-menu
-                title="User"
-                :show="tab"
+                    leave-absolute
+                    title="User"
+                    :show="tab"
             >
-                <user-main>
+                <div v-if="!signedIn">
+                    <v-slide-y-transition
+                            hide-on-leave
+                    >
+                        <user-main v-if="this.title=='User Main'" v-on:new-user="changePage('New User')" >
+                        </user-main>
+                    </v-slide-y-transition>
+                    <v-slide-y-transition
+                            hide-on-leave
 
-                </user-main>
+                    >
+                        <user-new v-on:back-sign-in="changePage('User Main')" v-if="this.title=='New User'"></user-new>
+                    </v-slide-y-transition>
+                </div>
             </trans-menu>
             <trans-menu
                 title="About"
@@ -124,6 +140,7 @@ import noRecipe from './components/no-recipes.vue'
 import transMenu from './components/transitions-menu.vue'
 import about from './components/about.vue'
 import userMain from './components/user-main.vue'
+import userNew from './components/user-new.vue'
 import { eventBus } from './main.js'
 import mockRecipes from "./mockRecipes.js";
 
@@ -139,7 +156,8 @@ export default {
           loading:false,
           noRecipes:false,
           tab:'Main',
-          apiLimit:false
+          apiLimit:false,
+          signedIn:null
       }
   },
   components: {
@@ -153,7 +171,8 @@ export default {
       'no-recipe':noRecipe,
       'trans-menu':transMenu,
       'about':about,
-      'user-main':userMain
+      'user-main':userMain,
+      'user-new':userNew
   },
   methods: {
       changePage: function (newPage,hideSearch) {
@@ -197,20 +216,28 @@ export default {
               this.changePage(this.prevTitle)
       },
       findRecipes: async function (ingred) {
-          this.loading = true
-          this.recipes = await food2fork(ingred)
-          if(this.recipes.count==0){
-              this.noRecipes = true
-          }
-          else if(this.recipes.error=='limit'){
-              this.apiLimit = true
-          }
-          this.loading = false
-          // this.recipes = mockRecipes
+          // this.loading = true
+          // this.recipes = await food2fork(ingred)
+          // if(this.recipes.count==0){
+          //     this.noRecipes = true
+          // }
+          // else if(this.recipes.error=='limit'){
+          //     this.apiLimit = true
+          // }
+          // this.loading = false
+          this.recipes = mockRecipes
       },
       changeTab:function(tab){
           window.scrollTo(0,0)
           this.tab = tab
+          switch (tab) {
+              case 'Main':
+                  this.changePage("Home")
+                  break;
+              case 'User':
+                  document.getElementById("user-button").click();
+                  this.changePage("User Main")
+          }
       },
   }
 }

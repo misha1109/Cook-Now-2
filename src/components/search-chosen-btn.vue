@@ -3,7 +3,7 @@
         <v-container  class="text-xs-center">
             <v-card
                     v-on:click="click"
-                    color="orange lighten-2"
+                    color="#FFB300"
                     style="border-radius: 18px"
             >
                 <v-card-text >
