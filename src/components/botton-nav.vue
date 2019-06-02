@@ -33,7 +33,6 @@
             </v-expand-transition>
         </v-bottom-nav>
     </v-card>
-
 </template>
 
 <script>

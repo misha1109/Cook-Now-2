@@ -1,5 +1,11 @@
 <template>
-    $END$
+    <v-img
+
+            contain
+            style="top:5vh; "
+            height="22vh"
+            :src="require('../../public/chef_logo.png')"
+    ></v-img>
 </template>
 
 <script>

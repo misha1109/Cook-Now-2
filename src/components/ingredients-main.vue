@@ -1,13 +1,13 @@
 <template>
-    <v-container grid-list-xl>
-        <v-layout column xs12>
+    <v-container pa-0 ma-0 grid-list-xl>
+        <v-layout column >
             <ingred-snackbar
                 :text="snackMsg"
                 :showMsg="msgToSnack"
             >
 
             </ingred-snackbar>
-            <v-flex>
+            <v-flex >
                 <ingredients-topic
                         title="Meat & Fish"
                         :list="ingredients.meat"
@@ -26,7 +26,7 @@
                      display="display-2"
 
                 >
-                    <v-icon xs12>fas fa-carrot
+                    <v-icon >fas fa-carrot
                     </v-icon>
                 </ingredients-topic>
             </v-flex>
@@ -35,14 +35,14 @@
                    :list="ingredients.fruits"
                    display="display-2"
                 >
-                    <v-icon xs4>fas fa-apple-alt
+                    <v-icon >fas fa-apple-alt
                     </v-icon>
                 </ingredients-topic>
             </v-flex>
             <v-flex>
                 <ingredients-topic title="Dairy & Baking"
-                                   :list="ingredients.dairyBaking"
-                                   display="display-2"
+                           :list="ingredients.dairyBaking"
+                           display="display-2"
                 >
                     <v-icon xs4>fas fa-cheese
                     </v-icon>

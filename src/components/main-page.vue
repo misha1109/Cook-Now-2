@@ -1,5 +1,5 @@
 <template>
-    <v-flex pa-4>
+    <v-flex pa-3>
         <v-btn v-on:click="func" fab color="#FDD835"
                class="mainBtn" large round >{{ text }}
         </v-btn>
@@ -21,7 +21,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .mainBtn{
         width:70vw;

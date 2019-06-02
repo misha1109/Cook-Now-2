@@ -2,7 +2,9 @@
     <v-container pa-0 ma-0 grid-list-xs text-xs-center>
         <v-layout row wrap>
             <v-flex xs4 pa-0 ma-0  v-for="i in ingredList" :key="i" >
-                <ingred-button :ingred="i"></ingred-button>
+                <ingred-button
+                        class="text"
+                        :ingred="i"></ingred-button>
             </v-flex >
         </v-layout>
     </v-container>
@@ -32,6 +34,9 @@
 </script>
 
 <style scoped>
+    .text{
+
+    }
     .button{
         color:#FDD835;
     }

@@ -1,5 +1,5 @@
 <template>
-    <v-flex px-4 pt-0>
+    <v-flex px-5 pt-0>
         <v-container  class="text-xs-center">
             <v-card
                     v-on:click="click"

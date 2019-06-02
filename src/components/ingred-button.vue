@@ -1,5 +1,6 @@
 <template>
-    <v-btn flat v-on:click="changeActive" :color="activeStatus">{{ ingred }}</v-btn>
+    <v-btn
+            flat v-on:click="changeActive" :color="activeStatus">{{ ingred }}</v-btn>
 </template>
 
 <script>

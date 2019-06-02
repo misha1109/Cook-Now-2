@@ -13,8 +13,9 @@
                 title="Main"
             >
                 <div v-if="title=='Home'">
-                    <v-container ma-0 pa-0 pt-3 fluid text-xs-center>
-                        <v-layout row wrap>
+                    <v-container ma-0 pa-0 fluid text-xs-center>
+                        <v-layout column wrap>
+                            <cook-now-logo></cook-now-logo>
                             <main-button v-on:changePage="changePage" page="Recipe List" text="search All recipes">
                             </main-button>
                             <main-button v-on:changePage="changePage" page="Choose ingredients" text="Choose by ingredients">
@@ -141,6 +142,7 @@ import transMenu from './components/transitions-menu.vue'
 import about from './components/about.vue'
 import userMain from './components/user-main.vue'
 import userNew from './components/user-new.vue'
+import cookLogo from './components/cook-now-logo.vue'
 import { eventBus } from './main.js'
 import mockRecipes from "./mockRecipes.js";
 
@@ -157,7 +159,7 @@ export default {
           noRecipes:false,
           tab:'Main',
           apiLimit:false,
-          signedIn:null
+          signedIn:null,
       }
   },
   components: {
@@ -172,7 +174,9 @@ export default {
       'trans-menu':transMenu,
       'about':about,
       'user-main':userMain,
-      'user-new':userNew
+      'user-new':userNew,
+      'cook-now-logo':cookLogo
+
   },
   methods: {
       changePage: function (newPage,hideSearch) {
@@ -216,16 +220,16 @@ export default {
               this.changePage(this.prevTitle)
       },
       findRecipes: async function (ingred) {
-          // this.loading = true
-          // this.recipes = await food2fork(ingred)
-          // if(this.recipes.count==0){
-          //     this.noRecipes = true
-          // }
-          // else if(this.recipes.error=='limit'){
-          //     this.apiLimit = true
-          // }
-          // this.loading = false
-          this.recipes = mockRecipes
+          this.loading = true
+          this.recipes = await food2fork(ingred)
+          if(this.recipes.count==0){
+              this.noRecipes = true
+          }
+          else if(this.recipes.error=='limit'){
+              this.apiLimit = true
+          }
+          this.loading = false
+          // this.recipes = mockRecipes
       },
       changeTab:function(tab){
           window.scrollTo(0,0)
@@ -244,14 +248,19 @@ export default {
 </script>
 <style>
     .backGround{
-        background-size: 100vw 100vh;
-        background:repeat;
         background-image: url("https://i.pinimg.com/originals/12/ec/f3/12ecf3434967abb127cc639735fdc8dd.jpg");
         background-attachment: fixed;
         background-position: top; /* Center the image */
         background-repeat: no-repeat; /* Do not repeat the image */
         background-size: cover;
+    }
 
+    .chefLogo{
+        background-image: url("../public/chef_logo.png");
+        background-attachment: fixed;
+        background-position: top;
+        background-size: contain;
+        background-color: red;
     }
 </style>
 

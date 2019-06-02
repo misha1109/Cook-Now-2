@@ -1,7 +1,7 @@
 <template>
     <v-container ma-0 pa-0
     >
-        <v-layout>
+        <v-layout row wrap>
             <v-flex xs1></v-flex>
             <v-flex xs10>
                 <v-card style="background-color: #FDD835; border-radius: 6%">

@@ -17,7 +17,7 @@
                     </v-img>
                     <v-card-title
                             primary-title
-                            style="font-family: Arial"
+                            class="text"
                     >
                         Cook-Now 2 allows you to find cooking recipes from different websites and publication by choosing which ingredient the recipe must contain.
                         <br>
@@ -36,14 +36,13 @@
 
 <script>
     export default {
-        name:'about.vue'
-
+        name: 'about.vue',
     }
 </script>
 
 <style scoped>
     .text{
-        font-size: large ;
-        font-family: "Times New Roman";
+        font-size: medium ;
+        font-family:Bold;
     }
 </style>
