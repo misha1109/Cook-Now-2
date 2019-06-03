@@ -32,6 +32,6 @@
 <style scoped>
     .text{
         font-size: 3vh ;
-        font-family: "Times New Roman";
+        font-family: Arial;
     }
 </style>

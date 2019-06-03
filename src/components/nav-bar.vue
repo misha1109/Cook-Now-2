@@ -12,7 +12,7 @@
                         v-on:click="back"
                         icon class="iconbgc" round>
                     <v-icon color="white">
-                        fas fa-angle-double-left
+                        fas fa-chevron-left
                     </v-icon>
                 </v-btn>
             </v-flex>

@@ -1,12 +1,14 @@
 <template>
     <v-app >
         <v-content class="backGround">
+        <v-scale-transition>
             <nav-bar
-                     v-if="tab == 'Main'"
-                     v-on:changeToHome="changePage"
-                     v-on:back = "back"
-                     :title="title">
+                    v-if="tab == 'Main'"
+                    v-on:changeToHome="changePage"
+                    v-on:back = "back"
+                    :title="title">
             </nav-bar>
+        </v-scale-transition>
             <br>
             <trans-menu
                 :show="tab"
@@ -15,13 +17,17 @@
                 <div v-if="title=='Home'">
                     <v-container ma-0 pa-0 fluid text-xs-center>
                         <v-layout column wrap>
-                            <cook-now-logo></cook-now-logo>
-                            <main-button v-on:changePage="changePage" page="Recipe List" text="search All recipes">
-                            </main-button>
-                            <main-button v-on:changePage="changePage" page="Choose ingredients" text="Choose by ingredients">
-                            </main-button>
-                            <main-button v-on:changePage="changePage" page="Add" text="Add recipe">
-                            </main-button>
+                            <v-flex xs11>
+                                <cook-now-logo
+                                        v-on:changeTab="changeTab"
+                                ></cook-now-logo>
+                                <main-button v-on:changePage="changePage" page="Recipe List" text="search All recipes">
+                                </main-button>
+                                <main-button v-on:changePage="changePage" page="Choose ingredients" text="Choose by ingredients">
+                                </main-button>
+                                <main-button v-on:changePage="changePage" page="Add" text="Add recipe">
+                                </main-button>
+                            </v-flex>
                         </v-layout>
                     </v-container>
                 </div>
@@ -118,7 +124,7 @@
                 title="About"
                 :show="tab"
             >
-                <about></about>
+                <about ></about>
             </trans-menu>
             <bottom-nav
             v-on:change-tab="changeTab"
@@ -232,7 +238,6 @@ export default {
           // this.recipes = mockRecipes
       },
       changeTab:function(tab){
-          window.scrollTo(0,0)
           this.tab = tab
           switch (tab) {
               case 'Main':
@@ -241,6 +246,11 @@ export default {
               case 'User':
                   document.getElementById("user-button").click();
                   this.changePage("User Main")
+                  break;
+              case 'About':
+                  document.getElementById("about-button").click();
+                  this.changePage('About')
+                  break;
           }
       },
   }

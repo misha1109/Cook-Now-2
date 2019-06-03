@@ -19,6 +19,7 @@
                 <v-icon>fas fa-user-circle</v-icon>
             </bottom-btn>
             <bottom-btn
+                    id="about-button"
                     v-on:change-tab="changeTab"
                     title="About">
                 <v-icon>fas fa-info-circle</v-icon>
