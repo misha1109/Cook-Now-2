@@ -10,6 +10,9 @@
                             <v-flex  xs12>
                                 <v-icon large>fas fa-users</v-icon>
                             </v-flex>
+                            <v-flex xs12>
+                                <h3 style="color: red; font-size: large">Server currently offline</h3>
+                            </v-flex>
                             <slot></slot>
                         </v-layout>
                     </v-container>

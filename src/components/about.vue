@@ -3,22 +3,27 @@
         <v-layout row >
             <v-flex xs1></v-flex>
             <v-flex xs10>
-                <v-card>
                 <v-container pa-0 ma-0 text-xs-center>
                     <v-layout column >
-                        <v-flex xs12>
-                            <v-card>
+                        <v-card light
+                            style="border-radius: 30px"
+                        >
+                        <v-card xs12>
                             <v-img
+                                    aspect-ratio="2"
+                                    height="28vh"
+                                    :transition=false
                                     src='https://cupofjo.com/wp-content/uploads/2019/04/mealsgrid.jpeg'
                             >
                             </v-img>
-                            </v-card>
-                        </v-flex>
-                        <v-flex xs12>
+                        </v-card>
+                        <v-flex xs12
+                        >
                             <v-card
-                                    style="padding-bottom: 10vh"
                             >
-                                <cook-now></cook-now>
+                                <cook-now
+                                    height="20vh"
+                                ></cook-now>
                                 <v-card-title
                                         primary-title
                                         class="text"
@@ -31,9 +36,9 @@
                                 </v-card-title>
                             </v-card>
                         </v-flex>
+                        </v-card>
                     </v-layout>
                 </v-container>
-                </v-card>
             </v-flex>
             <v-flex xs1></v-flex>
         </v-layout>
@@ -56,7 +61,7 @@
 
 <style scoped>
     .text{
-        font-size: large ;
+        font-size: medium ;
         font-family:Arial;
     }
 </style>

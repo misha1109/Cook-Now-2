@@ -1,19 +1,23 @@
 <template>
-    <v-text-field
-            style="top:5vh;"
-            class="search"
-            full-width
-            large
-            placeholder="Search for recipes by name"
-            box
-            outline
-            background-color="#F44336"
-            clearable
-            v-model="query"
-            :append-outer-icon="query ? 'fa-search' : ''"
-            @click:append-outer="click"
+    <v-flex xs12 pa-0 ma-0
+        style="background-color: white;"
     >
-    </v-text-field>
+        <v-text-field
+                style="top:5vh;"
+                class="search"
+                full-width
+                large
+                placeholder="Search for recipes by name"
+                outline
+                background-color="#F44336"
+                clearable
+                v-model="query"
+                :append-outer-icon="query ? 'fa-search' : ''"
+                @click:append-outer="click"
+        >
+        </v-text-field>
+    </v-flex>
+
 </template>
 
 <script>
@@ -37,7 +41,5 @@
     .search{
         font-size:x-large;
         font-family: "Britannic Bold";
-        width: 80vw;
-        background-color: white;
     }
 </style>

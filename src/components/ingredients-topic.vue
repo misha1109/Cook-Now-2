@@ -1,15 +1,16 @@
 <template>
         <v-flex>
             <v-card
+                    center-text-xs
                     style="border-radius: 18px"
                     :color="active"
             >
-                <v-card-text row class="text-xs-center">
+                <v-card-text row class="text-xs-center"s>
                     <v-container  grid-list-xs
                                   v-on:click="animate"
                     >
                         <v-layout row wrap>
-                            <v-flex xs12>
+                            <v-flex >
                                 <slot>
                                 </slot>
                             </v-flex >

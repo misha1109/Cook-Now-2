@@ -1,13 +1,13 @@
 <template>
+    <div>
+    <ingred-snackbar
+            :text="snackMsg"
+            :showMsg="msgToSnack"
+    >
+    </ingred-snackbar>
     <v-container pa-0 ma-0 grid-list-xl>
-        <v-layout column >
-            <ingred-snackbar
-                :text="snackMsg"
-                :showMsg="msgToSnack"
-            >
-
-            </ingred-snackbar>
-            <v-flex >
+        <v-layout column wrap>
+            <v-flex xs12>
                 <ingredients-topic
                         title="Meat & Fish"
                         :list="ingredients.meat"
@@ -20,7 +20,7 @@
                     </v-icon>
                 </ingredients-topic>
             </v-flex>
-            <v-flex>
+            <v-flex xs1>
                 <ingredients-topic title="Vegetables"
                     :list="ingredients.vegetable"
                      display="display-2"
@@ -66,6 +66,7 @@
             <search-chosen-ingred v-on:search-chosen="searchChosen"></search-chosen-ingred>
         </v-layout>
     </v-container>
+    </div>
 </template>
 
 <script>

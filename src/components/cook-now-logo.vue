@@ -3,7 +3,7 @@
             v-on:click="click"
             contain
             style="top:5vh; "
-            height="22vh"
+            :height="height"
             :src=img
     ></v-img>
 </template>
@@ -15,6 +15,9 @@
             return {
                 img:null
             }
+        },
+        props:{
+            height: String
         },
         methods:{
             click:function () {

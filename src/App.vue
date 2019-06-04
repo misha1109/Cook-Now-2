@@ -1,24 +1,26 @@
 <template>
     <v-app >
         <v-content class="backGround">
-        <v-scale-transition>
-            <nav-bar
-                    v-if="tab == 'Main'"
-                    v-on:changeToHome="changePage"
-                    v-on:back = "back"
-                    :title="title">
-            </nav-bar>
-        </v-scale-transition>
+        <nav-bar
+                v-show="tab == 'Main'"
+                v-on:changeToHome="changePage"
+                v-on:back = "back"
+                :title="title">
+        </nav-bar>
             <br>
-            <trans-menu
-                :show="tab"
-                title="Main"
+            <v-scale-transition
+                    hide-on-leave
             >
-                <div v-if="title=='Home'">
-                    <v-container ma-0 pa-0 fluid text-xs-center>
+                <v-flex v-show="title=='Home'"
+                >
+                    <v-container
+                            justify-center
+
+                            ma-0 pa-0 fluid text-xs-center>
                         <v-layout column wrap>
                             <v-flex xs11>
                                 <cook-now-logo
+                                        height="22vh"
                                         v-on:changeTab="changeTab"
                                 ></cook-now-logo>
                                 <main-button v-on:changePage="changePage" page="Recipe List" text="search All recipes">
@@ -30,55 +32,83 @@
                             </v-flex>
                         </v-layout>
                     </v-container>
-                </div>
-                <v-scale-transition
-                        leave-absolute
+                </v-flex>
+            </v-scale-transition>
+            <v-scale-transition
+                    hide-on-leave
+            >
+                <v-flex v-if="tab=='About'"
+                        v-on:click="changeTab('Main')"
                 >
-                    <div v-if="title=='Add'">
-                        <div v-if="!signedIn" v-on:click="changeTab('User')">
-                            <v-slide-y-transition
-                                    hide-on-leave
-                            >
+                    <about
+                    ></about>
+                </v-flex>
+            </v-scale-transition>
+            <v-scale-transition
+                    hide-on-leave
+            >
+            <v-flex v-show="tab == 'User'">
+                <div v-show="!signedIn">
+                    <v-scale-transition
+                            hide-on-leave
+                    >
+                    <user-main v-if="this.title=='User Main'" v-on:new-user="changePage('New User')" >
+                    </user-main>
+                    </v-scale-transition>
+                    <v-scale-transition
+                            hide-on-leave
+                    >
+                    <user-new v-on:back-sign-in="changePage('User Main')" v-if="this.title=='New User'">
+                    </user-new>
+                    </v-scale-transition>
+                </div>
+            </v-flex>
+            </v-scale-transition>
+            <v-scale-transition
+                    hide-on-leave
+            >
+                    <div v-show="title=='Add'">
+                        <div v-show="!signedIn" v-on:click="changeTab('User')">
                                 <no-recipe >
                                     <p>Sign in to add recipes</p>
                                 </no-recipe>
-                            </v-slide-y-transition>
                         </div>
                     </div>
-                </v-scale-transition>
-                <v-scale-transition
-                        leave-absolute
-                >
+            </v-scale-transition>
+            <v-scale-transition
+                    hide-on-leave
+            >
                     <v-container ma-0 py-0 fluid v-if="title=='Recipe List'">
+                        <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes">
+                        </recipe-search>
                         <v-layout row wrap>
-                            <recipe-search v-if="recipeFreeSeach" v-on:search-recipe="findRecipes">
-                            </recipe-search>
                             <div
-                                    v-if="loading"
+                                    v-show="loading"
                                     class="text-xs-center"
                             >
                                 <loading></loading>
                             </div>
-                            <v-scale-transition
-                                    leave-absolute
-                            >
                             <v-container ma-0 pa-0 py-5 v-if="recipes" fluid grid-list-lg>
                                 <v-layout column wrap>
+                                    <v-expand-transition
+                                        hide-on-leave
+                                        group
+                                    >
                                     <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
                                         <recipe-card :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
                                         </recipe-card>
                                     </div>
+                                    </v-expand-transition>
                                 </v-layout>
                             </v-container>
-                            </v-scale-transition>
-                            <div v-if="noRecipes" v-on:click="back">
+                            <div v-show="noRecipes" v-on:click="back">
                                 <no-recipe>
                                     No recipes found
                                     <br>
                                     Choose different ingredients
                                 </no-recipe>
                             </div>
-                            <div v-if="apiLimit" v-on:click="changePage('Home')">
+                            <div v-show="apiLimit" v-on:click="changePage('Home')">
                                 <no-recipe>
                                     Api limit reached
                                     <br>
@@ -87,45 +117,15 @@
                             </div>
                         </v-layout>
                     </v-container>
-                </v-scale-transition>
-
-                <v-scale-transition
-                        class="d-flex  transparent darken-2  white--text"
-                    leave-absolute
-                >
+            </v-scale-transition>
+            <v-scale-transition
+                    hide-on-leave
+            >
                 <v-container ma-0 py-5 v-if="title=='Choose ingredients'">
                     <ingredients-main v-on:final-ingred-added = "findRecipes" v-on:changePage="changePage">
                     </ingredients-main>
                 </v-container>
-                </v-scale-transition>
-
-            </trans-menu>
-            <trans-menu
-                    leave-absolute
-                    title="User"
-                    :show="tab"
-            >
-                <div v-if="!signedIn">
-                    <v-slide-y-transition
-                            hide-on-leave
-                    >
-                        <user-main v-if="this.title=='User Main'" v-on:new-user="changePage('New User')" >
-                        </user-main>
-                    </v-slide-y-transition>
-                    <v-slide-y-transition
-                            hide-on-leave
-
-                    >
-                        <user-new v-on:back-sign-in="changePage('User Main')" v-if="this.title=='New User'"></user-new>
-                    </v-slide-y-transition>
-                </div>
-            </trans-menu>
-            <trans-menu
-                title="About"
-                :show="tab"
-            >
-                <about ></about>
-            </trans-menu>
+            </v-scale-transition>
             <bottom-nav
             v-on:change-tab="changeTab"
             >
@@ -226,6 +226,7 @@ export default {
               this.changePage(this.prevTitle)
       },
       findRecipes: async function (ingred) {
+          this.recipes = null
           this.loading = true
           this.recipes = await food2fork(ingred)
           if(this.recipes.count==0){
@@ -241,6 +242,7 @@ export default {
           this.tab = tab
           switch (tab) {
               case 'Main':
+                  document.getElementById("main-button").click();
                   this.changePage("Home")
                   break;
               case 'User':
