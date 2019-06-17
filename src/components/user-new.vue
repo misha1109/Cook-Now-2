@@ -15,11 +15,13 @@
                     <v-text-field
                             hint="Enter your password"
                             background-color="white"
+                            type="password"
                             label="Password"  v-model="pass">
                     </v-text-field>
                     <v-text-field
                             hint="Enter password again"
                             background-color="white"
+                            type="password"
                             label="Confirm Password"  v-model="confPass">
                     </v-text-field>
                 </v-flex>

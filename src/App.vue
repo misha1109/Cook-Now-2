@@ -90,15 +90,18 @@
                             </div>
                             <v-container ma-0 pa-0 py-5 v-if="recipes" fluid grid-list-lg>
                                 <v-layout column wrap>
-                                    <v-expand-transition
-                                        hide-on-leave
+                                    <v-scale-transition
                                         group
+                                        hide-on-leave
+
                                     >
                                     <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
+                                        <div>
                                         <recipe-card :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
                                         </recipe-card>
+                                        </div>
                                     </div>
-                                    </v-expand-transition>
+                                    </v-scale-transition>
                                 </v-layout>
                             </v-container>
                             <div v-show="noRecipes" v-on:click="back">
