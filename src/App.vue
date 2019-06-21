@@ -48,17 +48,28 @@
                     hide-on-leave
             >
             <v-flex v-show="tab == 'User'">
-                <div v-show="!signedIn">
+                <div>
                     <v-scale-transition
                             hide-on-leave
                     >
-                    <user-main v-if="this.title=='User Main'" v-on:new-user="changePage('New User')" >
+                    <user-main
+                            v-if="this.title=='User Main'"
+                            v-on:new-user="changePage('New User')"
+                            v-on:login-success = "loginSuccess"
+                            v-on:login-failed = "loginFailed"
+                            v-on:sign-out = "signOut"
+                            :logged="signedIn"
+                    >
                     </user-main>
                     </v-scale-transition>
                     <v-scale-transition
                             hide-on-leave
                     >
-                    <user-new v-on:back-sign-in="changePage('User Main')" v-if="this.title=='New User'">
+                    <user-new
+                            v-if="this.title=='New User'"
+                            v-on:back-sign-in="changePage('User Main')"
+                            v-on:login-success="loginSuccess"
+                    >
                     </user-new>
                     </v-scale-transition>
                 </div>
@@ -147,11 +158,11 @@ import food2fork from './foodAPI/food2forkAgent,js'
 import ingredMain from './components/ingredients-main.vue'
 import loading from './components/loading.vue'
 import noRecipe from './components/no-recipes.vue'
-import transMenu from './components/transitions-menu.vue'
 import about from './components/about.vue'
 import userMain from './components/user-main.vue'
 import userNew from './components/user-new.vue'
 import cookLogo from './components/cook-now-logo.vue'
+import { verifyToken, signUp } from './userAPI/userAPI.js'
 import { eventBus } from './main.js'
 import mockRecipes from "./mockRecipes.js";
 
@@ -169,6 +180,7 @@ export default {
           tab:'Main',
           apiLimit:false,
           signedIn:null,
+          loginFailedShow : false
       }
   },
   components: {
@@ -180,13 +192,17 @@ export default {
       'ingredients-main':ingredMain,
       'loading':loading,
       'no-recipe':noRecipe,
-      'trans-menu':transMenu,
       'about':about,
       'user-main':userMain,
       'user-new':userNew,
       'cook-now-logo':cookLogo
 
   },
+
+  beforeMount(){
+      this.userCookie()
+  },
+
   methods: {
       changePage: function (newPage,hideSearch) {
           switch (newPage) {
@@ -228,6 +244,7 @@ export default {
           else
               this.changePage(this.prevTitle)
       },
+
       findRecipes: async function (ingred) {
           this.recipes = null
           this.loading = true
@@ -241,6 +258,7 @@ export default {
           this.loading = false
           // this.recipes = mockRecipes
       },
+
       changeTab:function(tab){
           this.tab = tab
           switch (tab) {
@@ -258,6 +276,38 @@ export default {
                   break;
           }
       },
+
+      loginSuccess : function( token, email){
+          window.localStorage.setItem("userCookieToken", token)
+          window.localStorage.setItem("userCookieEmail", email)
+          this.signedIn = email
+          this.title = 'User Main'
+      },
+
+      loginFailed : function(){
+            this.loginFailedShow = true
+      },
+
+      signOut : function(){
+          window.localStorage.removeItem('userCookieToken');
+          this.signedIn = null
+      },
+
+      userCookie : async function(){
+          try {
+              let token = window.localStorage.getItem('userCookieToken')
+              if(token){
+                  let result = await verifyToken(token)
+                  if(result.message == 'Token valid'){
+                      this.signedIn = window.localStorage.getItem('userCookieEmail')
+                  }
+              }
+          }
+          catch (e) {
+              return 'error'
+          }
+      }
+
   }
 }
 </script>
@@ -268,14 +318,6 @@ export default {
         background-position: top; /* Center the image */
         background-repeat: no-repeat; /* Do not repeat the image */
         background-size: cover;
-    }
-
-    .chefLogo{
-        background-image: url("../public/chef_logo.png");
-        background-attachment: fixed;
-        background-position: top;
-        background-size: contain;
-        background-color: red;
     }
 </style>
 
