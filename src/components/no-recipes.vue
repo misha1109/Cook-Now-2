@@ -1,20 +1,25 @@
 <template>
-    <v-layout>
-        <v-flex xs1></v-flex>
-        <v-flex xs10>
-            <v-card
-                    class="text-xs-center text"
-                    v-on:click="back"
-                    style="border-radius: 18px;top:15vh;"
-                    color="#FDD835"
+    <v-container
+            justify-center
+            ma-0 px-5 fluid text-xs-center>
+        <v-layout>
+            <v-flex xs1 md3 sm3></v-flex>
+            <v-flex xs10 md6 sm6
             >
-                <v-card-text text-xs-center>
-                    <slot></slot>
-                </v-card-text>
-            </v-card>
-        </v-flex>
-    </v-layout>
-
+                <v-card
+                        class="text-xs-center text"
+                        v-on:click="back"
+                        style="border-radius: 18px;top:15vh;"
+                        color="#FDD835"
+                >
+                    <v-card-text text-xs-center>
+                        <slot></slot>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+            <v-flex xs1 md3 sm3></v-flex>
+        </v-layout>
+    </v-container>
 
 </template>
 

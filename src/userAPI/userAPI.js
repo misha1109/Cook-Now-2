@@ -2,16 +2,16 @@ import axios from 'axios'
 
 const urlPath = 'https://cook-now-2.herokuapp.com/'
 
-axios.interceptors.response.use(response => {
-    return response;
-}, error => {
-    if (error.response.status === 401) {
-        return {
-            message: '401 error'
-        }
-    }
-    return error;
-});
+// axios.interceptors.response.use(response => {
+//     return response;
+// }, error => {
+//     if (error.response.status === 401) {
+//         return {
+//             message: '401 error'
+//         }
+//     }
+//     return error;
+// });
 
 
 export async function login( name, pass){
@@ -31,7 +31,9 @@ export async function login( name, pass){
     }
 
     catch ( err) {
-        return err
+        return {
+            message : err.message
+        }
     }
 
 }
@@ -49,12 +51,13 @@ export async function signUp( email, pass){
                 password: pass
             }
         })
-        return res.message
+        return res.data
     }
 
     catch( err){
-        console.log('sign up err')
-        return err
+        return {
+            message : 'Sign up error'
+        }
     }
 }
 
@@ -74,7 +77,9 @@ export  async function verifyToken( token) {
     }
 
     catch( err){
-        return err
+        return {
+            message : 'Token not valid'
+        }
     }
 
 }

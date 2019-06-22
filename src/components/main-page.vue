@@ -27,7 +27,7 @@ export default {
         height:12.93vh;
         font-size: large;
         font-style: italic;
-        font-family: "Britannic Bold";
+        font-family: "Arial";
         /*opacity: 0.8;*/
     }
 

@@ -4,16 +4,18 @@ const getRecipes =async (i) =>{
     let reply
     let ingredients = i.join(',')
     await axios.get('https://www.food2fork.com/api/search\n', {
+        // mode: 'cors',
         params: {
             key: api_key,
             q:ingredients
-        }
+        },
+        timeout: 6000
     })
         .then(function (response) {
             reply = response.data;
         })
         .catch(function (error) {
-            reply = error;
+            reply = 'food2fork api request timed-out';
         })
     return reply
 }

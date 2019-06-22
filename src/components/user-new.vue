@@ -95,19 +95,24 @@
 
                 else if( this.pass == this.confPass){
                     const msg = await signUp( this.email, this.pass).then( res => {
-                        console.log('sign up ')
-                        try{
-                            return this.loginNew().then( res => {
-                                if(res.message == "Auth successful"){
-                                    return res
-                                }
-                                else{
-                                    return false
-                                }
-                            })
+                        if(res.message != 'Sign up error')
+                        {
+                            try{
+                                return this.loginNew().then( res => {
+                                    if(res.message == "Auth successful"){
+                                        return res
+                                    }
+                                    else{
+                                        return 'Login error'
+                                    }
+                                })
+                            }
+                            catch(err){
+                                return 'Unrecognized error'
+                            }
                         }
-                        catch(err){
-                            return 'Unrecognized error'
+                        else {
+                            return res.message
                         }
                     })
 
@@ -115,7 +120,7 @@
                         this.$emit('login-success',msg.token,this.email)
                     }
                     else{
-                        this.showErr('Enter valid email')
+                        this.showErr(msg)
                     }
                 }
 

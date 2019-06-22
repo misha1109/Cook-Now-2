@@ -15,7 +15,6 @@
                 >
                     <v-container
                             justify-center
-
                             ma-0 pa-0 fluid text-xs-center>
                         <v-layout column wrap>
                             <v-flex xs11>
@@ -23,9 +22,9 @@
                                         height="22vh"
                                         v-on:changeTab="changeTab"
                                 ></cook-now-logo>
-                                <main-button v-on:changePage="changePage" page="Recipe List" text="search All recipes">
-                                </main-button>
                                 <main-button v-on:changePage="changePage" page="Choose ingredients" text="Choose by ingredients">
+                                </main-button>
+                                <main-button v-on:changePage="changePage" page="Recipe List" text="Free search">
                                 </main-button>
                                 <main-button v-on:changePage="changePage" page="Add" text="Add recipe">
                                 </main-button>
@@ -129,6 +128,16 @@
                                     Try again later
                                 </no-recipe>
                             </div>
+                            <div v-show="food2forkDown" v-on:click="changePage('Home')">
+                                <no-recipe>
+                                    <h4 style="color: red;">
+                                        Food2Fork server is down
+                                    </h4>
+                                    No recipes are available.
+                                    <br>
+                                    Try again later
+                                </no-recipe>
+                            </div>
                         </v-layout>
                     </v-container>
             </v-scale-transition>
@@ -180,7 +189,8 @@ export default {
           tab:'Main',
           apiLimit:false,
           signedIn:null,
-          loginFailedShow : false
+          loginFailedShow : false,
+          food2forkDown: false
       }
   },
   components: {
@@ -234,6 +244,7 @@ export default {
           this.title = newPage
           this.noRecipes = false
           this.apiLimit = false
+          this.food2forkDown = false
           window.scrollTo(0,0)
 
       },
@@ -248,12 +259,16 @@ export default {
       findRecipes: async function (ingred) {
           this.recipes = null
           this.loading = true
+          console.log('searching')
           this.recipes = await food2fork(ingred)
           if(this.recipes.count==0){
               this.noRecipes = true
           }
           else if(this.recipes.error=='limit'){
               this.apiLimit = true
+          }
+          else{
+              this.food2forkDown = true
           }
           this.loading = false
           // this.recipes = mockRecipes
