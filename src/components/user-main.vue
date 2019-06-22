@@ -5,11 +5,11 @@
                     v-if="logged"
             >
                 <v-flex xs12>
-                    <user-logged
-                        :email = "logged"
-                        v-on:sign-out="signout"
-                    >
-                    </user-logged>
+                        <user-logged
+                            :email = "logged"
+                            v-on:sign-out="signout"
+                        >
+                        </user-logged>
                 </v-flex>
             </div>
             <div v-else>
