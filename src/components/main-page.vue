@@ -1,7 +1,10 @@
 <template>
-    <v-flex pa-3>
+    <v-flex pt-3>
         <v-btn v-on:click="func" fab color="#FDD835"
-               class="mainBtn" large round >{{ text }}
+               class="mainBtn" large round >
+            <h4>
+                {{ text }}
+            </h4>
         </v-btn>
     </v-flex>
 </template>
@@ -23,7 +26,7 @@ export default {
 
 <style scoped>
     .mainBtn{
-        width:70vw;
+        width:70%;
         height:12.93vh;
         font-size: large;
         font-style: italic;

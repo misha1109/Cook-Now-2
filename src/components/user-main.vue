@@ -37,6 +37,13 @@
                     <v-btn v-on:click="newAcc" flat >Don't have an account? Sign up</v-btn>
                 </v-flex>
             </div>
+            <div
+                    v-if="errMsg">
+                <v-flex xs12 pa-2 ma-2
+                >
+                    <h4 style="text-align: center; color:red">{{ errMsg }}</h4>
+                </v-flex>
+            </div>
         </v-flex>
     </user-background>
 </template>
@@ -51,7 +58,8 @@
         data:function () {
             return {
                 email:null,
-                pass:null
+                pass:null,
+                errMsg: null
             }
         },
         props:{
@@ -73,9 +81,10 @@
                 login( email, this.pass).then( res => {
                     if(res.message == "Auth successful"){
                         this.$emit('login-success',res.token,  email )
+                        this.errMsg = null
                     }
                     else{
-                        this.$emit('login-failed',res.message)
+                        this.errMsg = res.message
                     }
                 })
             },

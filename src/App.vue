@@ -1,5 +1,5 @@
 <template>
-    <v-app >
+    <v-app>
         <v-content class="backGround">
         <nav-bar
                 v-show="tab == 'Main'"
@@ -16,8 +16,9 @@
                     <v-container
                             justify-center
                             ma-0 pa-0 fluid text-xs-center>
-                        <v-layout column wrap>
-                            <v-flex xs11>
+                        <v-layout row wrap>
+                            <v-flex lg3></v-flex>
+                            <v-flex lg6 xs12>
                                 <cook-now-logo
                                         height="22vh"
                                         v-on:changeTab="changeTab"
@@ -29,25 +30,31 @@
                                 <main-button v-on:changePage="changePage" page="Add" text="Add recipe">
                                 </main-button>
                             </v-flex>
+                            <v-flex lg3></v-flex>
+
                         </v-layout>
                     </v-container>
                 </v-flex>
             </v-scale-transition>
+                <v-layout row wrap>
+                    <v-flex lg4></v-flex>
+                    <v-scale-transition
+                            hide-on-leave>
+                    <v-flex row wrap lg4 v-if="tab=='About'"
+                            v-on:click="changeTab('Main')"
+                    >
+                        <about
+                        ></about>
+                    </v-flex>
+                    </v-scale-transition>
+                    <v-flex lg4></v-flex>
+                </v-layout>
             <v-scale-transition
                     hide-on-leave
             >
-                <v-flex v-if="tab=='About'"
-                        v-on:click="changeTab('Main')"
-                >
-                    <about
-                    ></about>
-                </v-flex>
-            </v-scale-transition>
-            <v-scale-transition
-                    hide-on-leave
-            >
-            <v-flex v-show="tab == 'User'">
-                <div>
+            <v-layout row wrap>
+                <v-flex lg4></v-flex>
+                <v-flex lg4 v-show="tab == 'User'">
                     <v-scale-transition
                             hide-on-leave
                     >
@@ -71,8 +78,9 @@
                     >
                     </user-new>
                     </v-scale-transition>
-                </div>
-            </v-flex>
+                </v-flex>
+                <v-flex lg4></v-flex>
+            </v-layout>
             </v-scale-transition>
             <v-scale-transition
                     hide-on-leave
@@ -85,72 +93,107 @@
                         </div>
                     </div>
             </v-scale-transition>
-            <v-scale-transition
-                    hide-on-leave
-            >
-                    <v-container ma-0 py-0 fluid v-if="title=='Recipe List'">
-                        <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes">
-                        </recipe-search>
-                        <v-layout row wrap>
-                            <div
-                                    v-show="loading"
-                                    class="text-xs-center"
-                            >
-                                <loading></loading>
-                            </div>
-                            <v-container ma-0 pa-0 py-5 v-if="recipes" fluid grid-list-lg>
-                                <v-layout column wrap>
-                                    <v-scale-transition
-                                        group
-                                        hide-on-leave
-
+            <v-container pa-0 ma-0>
+            <v-layout row wrap>
+                <v-flex lg2></v-flex>
+                    <v-flex lg8 xs12>
+                    <v-scale-transition
+                            hide-on-leave
+                    >
+                            <v-container ma-0 py-0 fluid v-if="title=='Recipe List'">
+                                <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes" :page="recipePage">
+                                </recipe-search>
+                                <v-layout row wrap>
+                                    <div
+                                            v-show="loading"
+                                            class="text-xs-center"
                                     >
-                                    <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
-                                        <div>
-                                        <recipe-card :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
-                                        </recipe-card>
-                                        </div>
+                                        <loading></loading>
                                     </div>
+                                    <v-scale-transition>
+                                    <v-container ma-0 pa-0 py-5 v-if="recipes" fluid grid-list-lg
+                                        text-xs-center
+                                    >
+                                        <v-layout row wrap>
+                                            <v-flex xs12>
+                                                <v-scale-transition
+                                                    group
+                                                    hide-on-leave
+
+                                                >
+                                                <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
+                                                    <div>
+                                                    <recipe-card :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
+                                                    </recipe-card>
+                                                    </div>
+                                                </div>
+                                                </v-scale-transition>
+                                                <br>
+                                                <v-btn
+                                                        round
+                                                        color="#FF8A80"
+                                                        v-show="!loading && recipes.recipes"
+                                                        v-on:click="showMore"
+                                                        large bottom>
+                                                    Show more
+                                                </v-btn>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                    </v-scale-transition>
+                                    <v-scale-transition>
+                                        <v-container >
+                                            <div v-show="noRecipes" v-on:click="back">
+                                                <no-recipe>
+                                                    No recipes found
+                                                    <br>
+                                                    Choose different ingredients
+                                                </no-recipe>
+                                            </div>
+                                            <div v-show="apiLimit" v-on:click="changePage('Home')">
+                                                <no-recipe>
+                                                    Api limit reached
+                                                    <br>
+                                                    Try again later
+                                                </no-recipe>
+                                            </div>
+                                            <div v-show="food2forkDown" v-on:click="changePage('Home')">
+                                                <no-recipe>
+                                                    <h4 style="color: red;">
+                                                        Food2Fork server is down
+                                                    </h4>
+                                                    No recipes are available.
+                                                    <br>
+                                                    Try again later
+                                                </no-recipe>
+                                            </div>
+                                        </v-container>
                                     </v-scale-transition>
                                 </v-layout>
                             </v-container>
-                            <div v-show="noRecipes" v-on:click="back">
-                                <no-recipe>
-                                    No recipes found
-                                    <br>
-                                    Choose different ingredients
-                                </no-recipe>
-                            </div>
-                            <div v-show="apiLimit" v-on:click="changePage('Home')">
-                                <no-recipe>
-                                    Api limit reached
-                                    <br>
-                                    Try again later
-                                </no-recipe>
-                            </div>
-                            <div v-show="food2forkDown" v-on:click="changePage('Home')">
-                                <no-recipe>
-                                    <h4 style="color: red;">
-                                        Food2Fork server is down
-                                    </h4>
-                                    No recipes are available.
-                                    <br>
-                                    Try again later
-                                </no-recipe>
-                            </div>
-                        </v-layout>
-                    </v-container>
-            </v-scale-transition>
-            <v-scale-transition
-                    hide-on-leave
-            >
-                <v-container ma-0 py-5 v-if="title=='Choose ingredients'">
-                    <ingredients-main v-on:final-ingred-added = "findRecipes" v-on:changePage="changePage">
-                    </ingredients-main>
-                </v-container>
-            </v-scale-transition>
+                    </v-scale-transition>
+                    </v-flex>
+                <v-flex lg2></v-flex>
+            </v-layout>
+            </v-container>
+            <v-container>
+                <v-layout row wrap>
+                    <v-flex lg3></v-flex>
+                        <v-flex lg6 xs12>
+                            <v-scale-transition
+                                    hide-on-leave
+                            >
+                                <v-container ma-0 py-3 v-if="title=='Choose ingredients'">
+                                    <ingredients-main v-on:final-ingred-added = "findRecipes" v-on:changePage="changePage">
+                                    </ingredients-main>
+                                </v-container>
+                            </v-scale-transition>
+                        </v-flex>
+                    <v-flex lg3></v-flex>
+                </v-layout>
+            </v-container>
             <bottom-nav
-            v-on:change-tab="changeTab"
+                v-on:change-tab="changeTab"
             >
             </bottom-nav>
         </v-content>
@@ -190,7 +233,9 @@ export default {
           apiLimit:false,
           signedIn:null,
           loginFailedShow : false,
-          food2forkDown: false
+          food2forkDown: false,
+          recipePage: 1,
+          choosenIngred : null
       }
   },
   components: {
@@ -220,6 +265,7 @@ export default {
                   this.recipes = null
                   this.prevTitle = "Home"
                   this.recipeFreeSeach = true
+                  this.recipePage = 1
                   eventBus.$emit('resetChosen')
                   break;
               case 'Recipe List':
@@ -257,17 +303,23 @@ export default {
       },
 
       findRecipes: async function (ingred) {
+          if(ingred!=null){
+              this.choosenIngred = ingred
+          }
           this.recipes = null
           this.loading = true
           console.log('searching')
-          this.recipes = await food2fork(ingred)
+          this.recipes = await food2fork({
+              q :this.choosenIngred,
+              page : this.recipePage
+          })
           if(this.recipes.count==0){
               this.noRecipes = true
           }
           else if(this.recipes.error=='limit'){
               this.apiLimit = true
           }
-          else{
+          else if( !this.recipes.recipes){
               this.food2forkDown = true
           }
           this.loading = false
@@ -321,6 +373,11 @@ export default {
           catch (e) {
               return 'error'
           }
+      },
+
+      showMore(){
+          this.recipePage++
+          this.findRecipes()
       }
 
   }

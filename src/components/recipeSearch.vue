@@ -5,7 +5,6 @@
         <v-text-field
                 style="top:5vh;"
                 class="search"
-                full-width
                 large
                 placeholder="Search for recipes by name"
                 outline

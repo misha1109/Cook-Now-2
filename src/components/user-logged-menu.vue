@@ -1,53 +1,77 @@
 <template>
         <v-container
         >
-            <v-flex v-if="!showAdd && !showFav" xs12>
+            <div v-if="!showAdd && !showFav">
                 <v-container
-                    text-xs-center text
+                    py-0
                 >
-                    <h3>Welcome</h3>
-                    <h4
-                    >
-                        {{ email }}
-                    </h4>
-                </v-container>
-                <v-flex row wrap xs12>
-                    <v-btn
-                            v-on:click="favClick"
-                            class="btns" color="#90CAF9" xs6
-                    >
-                        <v-layout row wrap>
-                        <v-flex xs12>
-                            <v-icon >
-                                fas fa-star
-                            </v-icon>
-                            <h4>
-                                Favorites
-                            </h4>
-                        </v-flex>
-                        </v-layout>
-                    </v-btn>
-                    <v-btn class="btns" color="#90CAF9" xs6
-                    >
-                        <v-layout row wrap>
-                            <v-flex xs12>
-                                <v-icon >
-                                    fas fa-plus
-                                </v-icon>
-                                <h4>
-                                    Added
+                    <v-layout row wrap>
+                        <v-flex
+                                xs6 py-3
+                                text-xs-center text
+                            >
+                                <h3>Welcome</h3>
+                                <h4
+                                >
+                                    {{ email }}
                                 </h4>
-                            </v-flex>
-                        </v-layout>
-                    </v-btn>
-                </v-flex>
+
+                        </v-flex>
+                        <v-flex
+                                xs6 py-2
+                        >
+                            <v-layout
+                                    row wrap
+                            >
+                                <v-flex xs12>
+                                    <v-btn
+                                            v-on:click="favClick"
+                                            class="btns" color="#90CAF9" xs6
+                                    >
+                                        <v-layout row wrap>
+                                            <v-flex xs12>
+                                                <v-icon >
+                                                    fas fa-star
+                                                </v-icon>
+                                                <h4>
+                                                    Favorites
+                                                </h4>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-btn>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-btn class="btns" color="#90CAF9" xs6
+                                    >
+                                        <v-layout row wrap>
+                                            <v-flex xs12>
+                                                <v-icon >
+                                                    fas fa-plus
+                                                </v-icon>
+                                                <h4>
+                                                    Added
+                                                </h4>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-btn>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
+                        <v-flex
+                                ma-0 pt-2
+                        >
+                            <v-btn
+                                    round
+                                    v-on:click="signout"
+                            >Sign out
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
                 <br>
-                <v-btn
-                        small
-                        round
-                        v-on:click="signout"
-                >Sign out</v-btn>
-            </v-flex>
+
+            </div>
+
             <v-flex
                 v-if="showFav"
             >
@@ -63,7 +87,6 @@
                         </recipe-card>
                     </v-flex>
                     </v-layout>
-
                 </v-container>
             </v-flex>
         </v-container>
@@ -105,7 +128,6 @@
 
 <style scoped>
     .btns{
-        width: 20vw;
         height: 8vh;
         border-radius: 15%;
         color: #FAFAFA;

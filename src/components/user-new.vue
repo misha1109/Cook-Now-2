@@ -112,7 +112,7 @@
                             }
                         }
                         else {
-                            return res.message
+                            return 'Enter valid email'
                         }
                     })
 

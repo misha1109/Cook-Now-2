@@ -2,21 +2,20 @@
             <v-flex xs12>
                 <v-card
                         class="border"
-                        tile
-                        color="#FFF59D"
-                        style="text-align: center; left:10vw; right:10vw;"
-                        width="70vw"
+                        tile max-width="70vw"
+                        color="#ECEFF1"
                 >
                     <v-img
-                            contain
+                            class="lgScreen"
                             :src="pic"
+                            v-on:click="showWarn"
                     ></v-img>
-
-                    <v-card-title primary-title style="text-align: center">
-                        <div>
-                            <h3 class="mb-0">{{title}}</h3>
-                        </div>
-                    </v-card-title>
+                    <v-container ma-0 pa-0>
+                        <v-card-text style="text-align: center">
+                                <h3 class="mb-0">{{title}}</h3>
+                        </v-card-text>
+                        <v-rating half-increments dense :value=(rating+1)/20></v-rating>
+                    </v-container>
                     <v-divider light></v-divider>
                     <v-card-text style="text-align: center">
                         <a style="text-decoration:none" :href="publisher_url">
@@ -24,47 +23,51 @@
                         </a>
                     </v-card-text>
                     <v-divider light></v-divider>
-                    <v-card-actions>
+                    <v-container pa-0 ma-0>
                         <v-btn
                                 v-on:click="showWarn"
                                 class="button"  flat color="orange">Go to recipe</v-btn>
-                        <v-rating half-increments dense :value=(rating+1)/20></v-rating>
-                    </v-card-actions>
+                    </v-container>
                 </v-card>
-                <div
-                        style="text-align: center;"
-                        pa-0 ma-0
+                <v-slide-y-transition
                 >
-                    <v-alert
+                <v-container
+                        v-show="show"
+                        style="text-align: center;"
+                >
+                    <v-card
                             color="warning"
                             class="alert "
-                            :value="show"
-                            transition="v-scale-transition"
                     >
-                        You are about to proceed to '{{ publisher }}' website
-                        <br>
+                        <v-layout row wrap>
+                            <v-flex xs2 pb-0 pt-1>
+                                <v-icon
+                                        color="red"
+                                        v-on:click="showWarn"
+                                >fas fa-times
+                                </v-icon>
+                            </v-flex>
+                        </v-layout>
+                        <h4>
+                            You are about to proceed to '{{ publisher }}' website
+                        </h4>
                         <v-btn
+                                color = "#FFFFFF"
                                 target="_blank"
                                 :href="url"
                                 flat
                                 class="alertBtn"
+                                v-on:click="showWarn"
                         >
                             Click to agree
                         </v-btn>
-                        <br>
-                        <v-icon
-                                v-on:click="showWarn"
-                                xs4>fas fa-times
-                        </v-icon>
-                    </v-alert>
-                </div>
+                    </v-card>
+                </v-container>
+                </v-slide-y-transition>
             </v-flex>
-
-
 </template>
 
 <script>
-    import toPub from './toPublisherWarning.vue'
 
     export default {
         name: "recipeCard.vue",
@@ -81,21 +84,27 @@
             publisher:String,
             publisher_url:String,
         },
-        components:{
-            'to-pub-warning':toPub
-        },
 
         methods:{
             showWarn(){
                 this.show = !this.show
-            }
+            },
         }
     }
 </script>
 
 <style scoped>
+    .lgScreen{
+        max-height: 40vh;
+    }
+
     .border{
         border-radius: 25px;
+        border-color: blue;
+        border-width: 30px;
+        text-align: center;
+        left:10vw;
+        right:10vw;
     }
     .button{
         font-size: medium;
@@ -114,5 +123,7 @@
         width: 35vw;
         font-size: small;
         border-radius: 20%;
+        border-color: blue;
+        border-width: 30px;
     }
 </style>

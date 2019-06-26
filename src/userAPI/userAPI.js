@@ -31,11 +31,38 @@ export async function login( name, pass){
     }
 
     catch ( err) {
-        return {
+        if(err.message == 'Request failed with status code 401'){
+            return {
+                message : 'Wrong password'
+            }
+        }
+        else return {
             message : err.message
         }
     }
 
+}
+
+export async function addToFav(recipe) {
+    try{
+        let res = await axios({
+            method: 'post',
+            url: urlPath + 'user/addToFav',
+            headers:{
+                'Content-type':'application/json',
+            },
+            data: {
+                recipe : recipe
+            }
+        })
+        return res.data
+    }
+
+    catch ( err) {
+        return {
+            message : err.message
+        }
+    }
 }
 
 export async function signUp( email, pass){
