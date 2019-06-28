@@ -26,6 +26,7 @@
             showMsg:Boolean,
             text:String,
         },
+
         updated() {
             this.show = this.showMsg
         }

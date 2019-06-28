@@ -1,6 +1,6 @@
 import axios from 'axios'
-const urlPath = 'http://localhost:4000/'
-// const urlPath = 'https://cook-now-2.herokuapp.com/'
+// const urlPath = 'http://localhost:4000/'
+const urlPath = 'https://cook-now-2.herokuapp.com/'
 
 // axios.interceptors.response.use(response => {
 //     return response;
@@ -133,6 +133,30 @@ export async function getFavorites( email){
         }
     }
 }
+
+export async function removeFavorite(email,id){
+    try{
+        let res = await axios({
+            method: 'post',
+            url: urlPath + 'user/deleteFav',
+            headers:{
+                'Content-type':'application/json',
+            },
+            data: {
+                email : email,
+                recipe_id : id
+            }
+        })
+        return res.data
+    }
+
+    catch( err){
+        return {
+            message : err.message
+        }
+    }
+}
+
 
 // export async function login( email, pass){
 //     // fetch('https://jsonplaceholder.typicode.com/posts',{

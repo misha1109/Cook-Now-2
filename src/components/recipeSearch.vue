@@ -44,10 +44,10 @@
 
     }
 
-    @media only screen and (min-width: 1000px) {
-        .search{
-            margin-left: 110px;
-        }
-    }
+    /*@media only screen and (min-width: 1000px) {*/
+    /*    .search{*/
+    /*        margin-left: 110px;*/
+    /*    }*/
+    /*}*/
 
 </style>

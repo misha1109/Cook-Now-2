@@ -25,7 +25,7 @@
                                 v-on:click="addToFav"
                                 round small
                         >
-                            {{favButton}}
+                            {{ favButton }}
                         </v-btn>
                         <v-rating half-increments dense :value=(rating+1)/20></v-rating>
                     </v-flex>
@@ -78,15 +78,14 @@
 </template>
 
 <script>
-    import { addToFav } from '../userAPI/userAPI.js'
+    import { addToFav,removeFavorite } from '../userAPI/userAPI.js'
 
     export default {
         name: "recipeCard.vue",
         data:function(){
             return {
-                // favButton : this.added ? 'Remove from favorites' : 'Add to favorites',
                 show:false,
-                favButton : this.filterFav()
+                favButton : null
             }
         },
         props:{
@@ -108,46 +107,50 @@
             },
 
             async addToFav(){
-                await addToFav({
-                    email : this.logged,
-                    favorite : {
-                        publisher : this.publisher,
-                        title : this.title,
-                        source_url : this.url,
-                        recipe_id: this.id,
-                        image_url:this.pic,
-                        social_rank : this.rating,
-                        publisher_url : this.publisher_url
+                if(this.logged){
+                    if(this.favButton == 'Add to favorites') {
+                        await addToFav({
+                            email: this.logged,
+                            favorite: {
+                                publisher: this.publisher,
+                                title: this.title,
+                                source_url: this.url,
+                                recipe_id: this.id,
+                                image_url: this.pic,
+                                social_rank: this.rating,
+                                publisher_url: this.publisher_url
+                            }
+                        })
+                        this.favButton = 'Remove from favorites'
+                        this.$emit('fav-message','Recipe added to your favorites')
                     }
-                })
-                this.favButton = this.favButton == 'Add to favorites'? 'Remove from favorites' : 'Add to favorites'
+
+                    else{
+                        await removeFavorite( this.logged , this.id)
+                        this.favButton = 'Add to favorites'
+                        this.$emit('fav-message','Recipe removed from favorites')
+                    }
+                }
+
+                else{
+                    this.$emit('fav-message','Login to add recipes')
+                }
+
             },
 
             filterFav(){
                 if(this.added){
-                    console.log(123)
-                    return 'Remove from favorites'
-                    // this.favButton  = 'Remove from favorites'
+                    this.favButton  = 'Remove from favorites'
                 }
                 else{
-                    return 'Add to favorites'
-                    // this.favButton  = 'Add to favorites'
+                    this.favButton  = 'Add to favorites'
                 }
             }
         },
 
-        created:function(){
-            this.filterFav()
-        },
-
-        updated:function(){
-            this.filterFav()
-        },
-
-        beforeMount:function() {
+        beforeMount() {
             this.filterFav()
         }
-
     }
 </script>
 

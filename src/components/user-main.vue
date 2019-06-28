@@ -19,20 +19,25 @@
             <div v-else>
                 <v-flex>
                     <slot></slot>
-                    <div >
-                        <v-text-field
-                                hint="Enter your email"
-                                background-color="white"
-                                label="Email"  v-model="email">
+                    <v-container pa-0 ma-0 >
+                        <v-layout row wrap>
+                            <v-flex xs1></v-flex>
+                            <v-flex xs10>
+                                <v-text-field
+                                        hint="Enter your email"
+                                        background-color="white"
+                                        label="Email"  v-model="email">
 
-                        </v-text-field>
-                        <v-text-field
-                                hint="Enter your password"
-                                background-color="white"
-                                type="password"
-                                label="Password"  v-model="pass">
-                        </v-text-field>
-                    </div>
+                                </v-text-field>
+                                <v-text-field
+                                        hint="Enter your password"
+                                        background-color="white"
+                                        type="password"
+                                        label="Password"  v-model="pass">
+                                </v-text-field>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
                 </v-flex>
                 <v-flex xs12>
                     <v-btn v-on:click="login" color="white" round>Sign in</v-btn>

@@ -94,16 +94,30 @@
                     </div>
             </v-scale-transition>
             <v-container pa-0 ma-0 text-xs-center justify-center>
+                <div v-if="addedToFav">
+                    <v-snackbar
+                            :timeout="3000" top color="pink" flat v-model="addedToFav"
+                    >
+                        <v-container text-xs-center pa-0 ma-0>
+                            <h4>
+                                {{ addedToFav }}
+                            </h4>
+                        </v-container>
+                    </v-snackbar>
+                </div>
             <v-layout row wrap>
                 <v-flex lg3 xs1></v-flex>
-                <v-flex >
+                <v-flex>
                     <v-scale-transition
                             hide-on-leave
                     >
                         <div v-if="title=='Recipe List'"
                         >
-                            <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes" :page="recipePage">
-                            </recipe-search>
+                            <v-container pa-0 ma-0>
+                                <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes" :page="recipePage">
+                                </recipe-search>
+                            </v-container>
+
                                 <v-flex
                                         v-show="loading"
                                 >
@@ -118,15 +132,14 @@
 
                                                 >
                                                     <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
-                                                        <div>
                                                             <recipe-card :logged="signedIn" :showFav=true :publisher_url="recipe.publisher_url"
                                                                          :publisher="recipe.publisher" :rating="recipe.social_rank"
                                                                          :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title"
                                                                          :id="recipe.recipe_id" :added="recipe.added"
+                                                                         v-on:fav-message="favSnack"
                                                             >
                                                             </recipe-card>
-                                                        </div>
-                                                    </div>
+\                                                    </div>
                                                 </v-scale-transition>
                                                 <br>
                                                 <v-btn
@@ -176,6 +189,7 @@
                         </div>
                     </v-scale-transition>
                 </v-flex>
+                <v-flex></v-flex>
             </v-layout>
             </v-container>
             <v-container
@@ -218,6 +232,7 @@ import about from './components/about.vue'
 import userMain from './components/user-main.vue'
 import userNew from './components/user-new.vue'
 import cookLogo from './components/cook-now-logo.vue'
+import favSnack from './components/fav-snackbar.vue'
 import { verifyToken, signUp, getFavorites } from './userAPI/userAPI.js'
 import { eventBus } from './main.js'
 import mockRecipes from "./mockRecipes.js";
@@ -240,7 +255,8 @@ export default {
           food2forkDown: false,
           recipePage: 1,
           choosenIngred : null,
-          favorites : null
+          favorites : null,
+          addedToFav : null
       }
   },
   components: {
@@ -255,7 +271,8 @@ export default {
       'about':about,
       'user-main':userMain,
       'user-new':userNew,
-      'cook-now-logo':cookLogo
+      'cook-now-logo':cookLogo,
+      'fav-snackbar' : favSnack
 
   },
 
@@ -328,9 +345,8 @@ export default {
           //     this.food2forkDown = true
           // }
           // this.loading = false
-          this.recipes = mockRecipes
-          await this.filterFavorites()
-          console.log(this.recipes)
+          let tempRecipes = mockRecipes
+          this.recipes = await this.filterFavorites(tempRecipes)
       },
 
       changeTab:function(tab){
@@ -387,10 +403,10 @@ export default {
           this.findRecipes()
       },
 
-      filterFavorites : async function(){
+      filterFavorites : async function(recipes){
           if(this.signedIn){
               let favorites = await getFavorites(this.signedIn)
-              await this.recipes.recipes.map( recipe => {
+              recipes.recipes.map( recipe => {
                   let found = favorites.message.find( fav => {
                       return fav.recipe_id == recipe.recipe_id
                   })
@@ -398,9 +414,19 @@ export default {
                       recipe.added = true
                   }
                   else
-                      recipe.add = false
+                      recipe.added = false
               })
           }
+          return recipes
+      },
+
+      favSnack(msg){
+          this.addedToFav = msg
+          console.log(this.addedToFav)
+          setTimeout(() => {
+              this.addedToFav = null
+              console.log(this.addedToFav)
+          }, 2500)
       }
 
   }
