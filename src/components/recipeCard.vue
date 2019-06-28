@@ -1,110 +1,166 @@
 <template>
-            <v-flex xs12>
-                <v-card
-                        class="border"
-                        tile max-width="70vw"
-                        color="#ECEFF1"
-                >
-                    <v-img
-                            class="lgScreen"
-                            :src="pic"
-                            v-on:click="showWarn"
-                    ></v-img>
-                    <v-container ma-0 pa-0>
-                        <v-card-text style="text-align: center">
-                                <h3 class="mb-0">{{title}}</h3>
-                        </v-card-text>
-                        <v-rating half-increments dense :value=(rating+1)/20></v-rating>
-                    </v-container>
+    <v-container>
+        <v-flex >
+            <v-card
+                    class="border"
+                    tile max-width="70vw"
+                    color="#ECEFF1"
+            >
+                <v-img
+                        class="lgScreen"
+                        :src="pic"
+                        v-on:click="showWarn"
+                ></v-img>
+                <v-container ma-0 pa-0>
+                    <v-flex>
+                        <h3>{{title}}</h3>
+                            <a style="text-decoration:none" :href="publisher_url">
+                                <h4 >Publisher : {{publisher}}</h4>
+                            </a>
+                    </v-flex>
                     <v-divider light></v-divider>
-                    <v-card-text style="text-align: center">
-                        <a style="text-decoration:none" :href="publisher_url">
-                            <h4 >Publisher : {{publisher}}</h4>
-                        </a>
-                    </v-card-text>
-                    <v-divider light></v-divider>
-                    <v-container pa-0 ma-0>
+                    <v-flex>
                         <v-btn
-                                v-on:click="showWarn"
-                                class="button"  flat color="orange">Go to recipe</v-btn>
-                    </v-container>
-                </v-card>
+                                v-if="showFav"
+                                v-on:click="addToFav"
+                                round small
+                        >
+                            {{favButton}}
+                        </v-btn>
+                        <v-rating half-increments dense :value=(rating+1)/20></v-rating>
+                    </v-flex>
+                </v-container>
+                <v-divider light></v-divider>
+                <v-container pa-0 ma-0>
+                    <v-btn
+                            v-on:click="showWarn"
+                            round color="orange">Go to recipe</v-btn>
+                </v-container>
                 <v-slide-y-transition
                 >
-                <v-container
-                        v-show="show"
-                        style="text-align: center;"
-                >
-                    <v-card
-                            color="warning"
-                            class="alert "
+                    <v-container
+                            v-show="show"
+                            style="text-align: center;"
                     >
-                        <v-layout row wrap>
-                            <v-flex xs2 pb-0 pt-1>
-                                <v-icon
-                                        color="red"
-                                        v-on:click="showWarn"
-                                >fas fa-times
-                                </v-icon>
-                            </v-flex>
-                        </v-layout>
-                        <h4>
-                            You are about to proceed to '{{ publisher }}' website
-                        </h4>
-                        <v-btn
-                                color = "#FFFFFF"
-                                target="_blank"
-                                :href="url"
-                                flat
-                                class="alertBtn"
-                                v-on:click="showWarn"
+                        <v-card
+                                color="#E1BEE7"
+                                class="alert "
                         >
-                            Click to agree
-                        </v-btn>
-                    </v-card>
-                </v-container>
+                            <v-layout row wrap>
+                                <v-flex xs2 pb-0 pt-1>
+                                    <v-icon
+                                            color="red"
+                                            v-on:click="showWarn"
+                                    >fas fa-times
+                                    </v-icon>
+                                </v-flex>
+                            </v-layout>
+                            <h4>
+                                You are about to proceed to '{{ publisher }}' website
+                            </h4>
+                            <v-btn
+                                    color = "#FFFFFF"
+                                    target="_blank"
+                                    :href="url"
+                                    flat
+                                    class="alertBtn"
+                                    v-on:click="showWarn"
+                            >
+                                Click to agree
+                            </v-btn>
+                        </v-card>
+                    </v-container>
                 </v-slide-y-transition>
-            </v-flex>
+            </v-card>
+        </v-flex>
+    </v-container>
+
 </template>
 
 <script>
+    import { addToFav } from '../userAPI/userAPI.js'
 
     export default {
         name: "recipeCard.vue",
         data:function(){
             return {
-                show:false
+                // favButton : this.added ? 'Remove from favorites' : 'Add to favorites',
+                show:false,
+                favButton : this.filterFav()
             }
         },
         props:{
+            id : String,
             pic:String,
             title:String,
             url:String,
             rating:Number,
             publisher:String,
             publisher_url:String,
+            showFav:Boolean,
+            added : Boolean,
+            logged:String
         },
 
         methods:{
             showWarn(){
                 this.show = !this.show
             },
+
+            async addToFav(){
+                await addToFav({
+                    email : this.logged,
+                    favorite : {
+                        publisher : this.publisher,
+                        title : this.title,
+                        source_url : this.url,
+                        recipe_id: this.id,
+                        image_url:this.pic,
+                        social_rank : this.rating,
+                        publisher_url : this.publisher_url
+                    }
+                })
+                this.favButton = this.favButton == 'Add to favorites'? 'Remove from favorites' : 'Add to favorites'
+            },
+
+            filterFav(){
+                if(this.added){
+                    console.log(123)
+                    return 'Remove from favorites'
+                    // this.favButton  = 'Remove from favorites'
+                }
+                else{
+                    return 'Add to favorites'
+                    // this.favButton  = 'Add to favorites'
+                }
+            }
+        },
+
+        created:function(){
+            this.filterFav()
+        },
+
+        updated:function(){
+            this.filterFav()
+        },
+
+        beforeMount:function() {
+            this.filterFav()
         }
+
     }
 </script>
 
 <style scoped>
     .lgScreen{
         max-height: 40vh;
+
     }
 
     .border{
         border-radius: 25px;
         border-color: blue;
         border-width: 30px;
-        text-align: center;
-        left:10vw;
-        right:10vw;
     }
     .button{
         font-size: medium;

@@ -1,14 +1,14 @@
 <template>
     <v-flex xs12 pa-0 ma-0
-        style="background-color: white;"
+            style="top:5vh;"
+
     >
         <v-text-field
-                style="top:5vh;"
                 class="search"
                 large
                 placeholder="Search for recipes by name"
                 outline
-                background-color="#F44336"
+                style="background-color: white;"
                 clearable
                 v-model="query"
                 :append-outer-icon="query ? 'fa-search' : ''"
@@ -40,5 +40,14 @@
     .search{
         font-size:x-large;
         font-family: "Britannic Bold";
+        width:100%;
+
     }
+
+    @media only screen and (min-width: 1000px) {
+        .search{
+            margin-left: 110px;
+        }
+    }
+
 </style>

@@ -1,7 +1,8 @@
 <template>
     <v-flex pt-3>
+        <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Roboto:400"/>
         <v-btn v-on:click="func" fab color="#FDD835"
-               class="mainBtn" large round >
+               class="button" large round >
             <h4>
                 {{ text }}
             </h4>
@@ -25,13 +26,11 @@ export default {
 </script>
 
 <style scoped>
-    .mainBtn{
+
+    .button {
         width:70%;
-        height:12.93vh;
-        font-size: large;
-        font-style: italic;
-        font-family: "Arial";
-        /*opacity: 0.8;*/
+        background: #3498db;
     }
+
 
 </style>

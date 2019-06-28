@@ -93,40 +93,40 @@
                         </div>
                     </div>
             </v-scale-transition>
-            <v-container pa-0 ma-0>
+            <v-container pa-0 ma-0 text-xs-center justify-center>
             <v-layout row wrap>
-                <v-flex lg2></v-flex>
-                    <v-flex lg8 xs12>
+                <v-flex lg3 xs1></v-flex>
+                <v-flex >
                     <v-scale-transition
                             hide-on-leave
                     >
-                            <v-container ma-0 py-0 fluid v-if="title=='Recipe List'">
-                                <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes" :page="recipePage">
-                                </recipe-search>
-                                <v-layout row wrap>
-                                    <div
-                                            v-show="loading"
-                                            class="text-xs-center"
+                        <div v-if="title=='Recipe List'"
+                        >
+                            <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes" :page="recipePage">
+                            </recipe-search>
+                                <v-flex
+                                        v-show="loading"
+                                >
+                                    <loading></loading>
+                                </v-flex>
+                                <v-scale-transition>
+                                    <v-container py-5 v-if="recipes" fluid grid-list-lg
                                     >
-                                        <loading></loading>
-                                    </div>
-                                    <v-scale-transition>
-                                    <v-container ma-0 pa-0 py-5 v-if="recipes" fluid grid-list-lg
-                                        text-xs-center
-                                    >
-                                        <v-layout row wrap>
-                                            <v-flex xs12>
                                                 <v-scale-transition
-                                                    group
-                                                    hide-on-leave
+                                                        group
+                                                        hide-on-leave
 
                                                 >
-                                                <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
-                                                    <div>
-                                                    <recipe-card :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
-                                                    </recipe-card>
+                                                    <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
+                                                        <div>
+                                                            <recipe-card :logged="signedIn" :showFav=true :publisher_url="recipe.publisher_url"
+                                                                         :publisher="recipe.publisher" :rating="recipe.social_rank"
+                                                                         :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title"
+                                                                         :id="recipe.recipe_id" :added="recipe.added"
+                                                            >
+                                                            </recipe-card>
+                                                        </div>
                                                     </div>
-                                                </div>
                                                 </v-scale-transition>
                                                 <br>
                                                 <v-btn
@@ -137,46 +137,50 @@
                                                         large bottom>
                                                     Show more
                                                 </v-btn>
+                                    </v-container>
+                                </v-scale-transition>
+                                <v-scale-transition>
+                                    <v-container
+                                            text-xs-center justify-center
+                                    >
+                                        <v-layout row wrap>
+                                            <v-flex xs12 lg12>
+                                                <div v-show="noRecipes" v-on:click="back">
+                                                    <no-recipe>
+                                                        No recipes found
+                                                        <br>
+                                                        Choose different ingredients
+                                                    </no-recipe>
+                                                </div>
+                                                <div v-show="apiLimit" v-on:click="changePage('Home')">
+                                                    <no-recipe>
+                                                        Api limit reached
+                                                        <br>
+                                                        Try again later
+                                                    </no-recipe>
+                                                </div>
+                                                <div v-show="food2forkDown" v-on:click="changePage('Home')">
+                                                    <no-recipe>
+                                                        <h4 style="color: red;">
+                                                            Food2Fork server is down
+                                                        </h4>
+                                                        No recipes are available.
+                                                        <br>
+                                                        Try again later
+                                                    </no-recipe>
+                                                </div>
                                             </v-flex>
                                         </v-layout>
                                     </v-container>
-                                    </v-scale-transition>
-                                    <v-scale-transition>
-                                        <v-container >
-                                            <div v-show="noRecipes" v-on:click="back">
-                                                <no-recipe>
-                                                    No recipes found
-                                                    <br>
-                                                    Choose different ingredients
-                                                </no-recipe>
-                                            </div>
-                                            <div v-show="apiLimit" v-on:click="changePage('Home')">
-                                                <no-recipe>
-                                                    Api limit reached
-                                                    <br>
-                                                    Try again later
-                                                </no-recipe>
-                                            </div>
-                                            <div v-show="food2forkDown" v-on:click="changePage('Home')">
-                                                <no-recipe>
-                                                    <h4 style="color: red;">
-                                                        Food2Fork server is down
-                                                    </h4>
-                                                    No recipes are available.
-                                                    <br>
-                                                    Try again later
-                                                </no-recipe>
-                                            </div>
-                                        </v-container>
-                                    </v-scale-transition>
-                                </v-layout>
-                            </v-container>
+                                </v-scale-transition>
+                        </div>
                     </v-scale-transition>
-                    </v-flex>
-                <v-flex lg2></v-flex>
+                </v-flex>
             </v-layout>
             </v-container>
-            <v-container>
+            <v-container
+                text-xs-center
+            >
                 <v-layout row wrap>
                     <v-flex lg3></v-flex>
                         <v-flex lg6 xs12>
@@ -214,7 +218,7 @@ import about from './components/about.vue'
 import userMain from './components/user-main.vue'
 import userNew from './components/user-new.vue'
 import cookLogo from './components/cook-now-logo.vue'
-import { verifyToken, signUp } from './userAPI/userAPI.js'
+import { verifyToken, signUp, getFavorites } from './userAPI/userAPI.js'
 import { eventBus } from './main.js'
 import mockRecipes from "./mockRecipes.js";
 
@@ -235,7 +239,8 @@ export default {
           loginFailedShow : false,
           food2forkDown: false,
           recipePage: 1,
-          choosenIngred : null
+          choosenIngred : null,
+          favorites : null
       }
   },
   components: {
@@ -254,8 +259,8 @@ export default {
 
   },
 
-  beforeMount(){
-      this.userCookie()
+  beforeMount:async function(){
+      await this.userCookie()
   },
 
   methods: {
@@ -303,27 +308,29 @@ export default {
       },
 
       findRecipes: async function (ingred) {
-          if(ingred!=null){
-              this.choosenIngred = ingred
-          }
-          this.recipes = null
-          this.loading = true
-          console.log('searching')
-          this.recipes = await food2fork({
-              q :this.choosenIngred,
-              page : this.recipePage
-          })
-          if(this.recipes.count==0){
-              this.noRecipes = true
-          }
-          else if(this.recipes.error=='limit'){
-              this.apiLimit = true
-          }
-          else if( !this.recipes.recipes){
-              this.food2forkDown = true
-          }
-          this.loading = false
-          // this.recipes = mockRecipes
+          // if(ingred!=null){
+          //     this.choosenIngred = ingred
+          // }
+          // this.recipes = null
+          // this.loading = true
+          // console.log('searching')
+          // this.recipes = await food2fork({
+          //     q :this.choosenIngred,
+          //     page : this.recipePage
+          // })
+          // if(this.recipes.count==0){
+          //     this.noRecipes = true
+          // }
+          // else if(this.recipes.error=='limit'){
+          //     this.apiLimit = true
+          // }
+          // else if( !this.recipes.recipes){
+          //     this.food2forkDown = true
+          // }
+          // this.loading = false
+          this.recipes = mockRecipes
+          await this.filterFavorites()
+          console.log(this.recipes)
       },
 
       changeTab:function(tab){
@@ -378,6 +385,22 @@ export default {
       showMore(){
           this.recipePage++
           this.findRecipes()
+      },
+
+      filterFavorites : async function(){
+          if(this.signedIn){
+              let favorites = await getFavorites(this.signedIn)
+              await this.recipes.recipes.map( recipe => {
+                  let found = favorites.message.find( fav => {
+                      return fav.recipe_id == recipe.recipe_id
+                  })
+                  if(found){
+                      recipe.added = true
+                  }
+                  else
+                      recipe.add = false
+              })
+          }
       }
 
   }

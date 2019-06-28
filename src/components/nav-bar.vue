@@ -57,16 +57,4 @@
         background-color: #FFAB40;
         opacitiy:0.4;
     }
-    .round{
-        border-bottom-left-radius: 60%;
-        border-bottom-right-radius: 60%;
-    }
-    .title{
-        font-family: "Times New Roman";
-        font-size: medium;
-    }
-    .top{
-        position:sticky;
-        top:0;
-    }
 </style>

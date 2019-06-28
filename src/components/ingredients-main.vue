@@ -5,11 +5,11 @@
             :showMsg="msgToSnack"
     >
     </ingred-snackbar>
-    <v-container pa-0 ma-0 grid-list-xl
+    <v-container pa-0 ma-0 grid-list-md
     >
         <v-layout>
-            <v-flex lg2 xs1></v-flex>
-            <v-flex lg8 xs10>
+            <v-flex lg2></v-flex>
+            <v-flex lg8 xs12>
             <v-layout column wrap>
                 <v-flex xs10>
                     <ingredients-topic
@@ -67,7 +67,9 @@
                         </v-icon>
                     </ingredients-topic>
                 </v-flex>
-                <search-chosen-ingred v-on:search-chosen="searchChosen"></search-chosen-ingred>
+                <v-flex>
+                    <search-chosen-ingred v-on:search-chosen="searchChosen"></search-chosen-ingred>
+                </v-flex>
             </v-layout>
             </v-flex>
         </v-layout>

@@ -69,31 +69,33 @@
                     </v-layout>
                 </v-container>
                 <br>
-
             </div>
-
-            <v-flex
-                v-if="showFav"
+            <v-scale-transition
+                hide-on-leave
             >
                 <v-container
-                        fluid grid-list-sm
+                        v-if="showFav"
+                        grid-list-sm text-xs-center text
                 >
-                    <v-layout column wrap>
-
-                    <v-flex
-                            v-for="recipe in mockedFav.recipes" v-bind:key="recipe.recipe_id">
-                        <recipe-card
-                                :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
-                        </recipe-card>
-                    </v-flex>
+                    <v-btn
+                            style="position: sticky" round
+                            v-on:click="back"
+                    >Back</v-btn>
+                    <v-layout row wrap>
+                        <v-flex v-for="recipe in favorites" v-bind:key="recipe.recipe_id">
+                            <recipe-card
+                                    :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
+                            </recipe-card>
+                        </v-flex>
                     </v-layout>
                 </v-container>
-            </v-flex>
+            </v-scale-transition>
         </v-container>
 </template>
 
 <script>
     import recipeCard from './recipeCard.vue'
+    import { getFavorites } from '../userAPI/userAPI.js'
     import mockRecipes from "../mockRecipes.js";
 
     export default {
@@ -102,7 +104,7 @@
             return {
                 showFav : false,
                 showAdd : false,
-                mockedFav : mockRecipes
+                favorites : null
             }
         },
 
@@ -119,8 +121,15 @@
                 this.$emit('sign-out')
             },
 
-            favClick : function() {
+            favClick : async function() {
+                this.favorites = await getFavorites(this.email)
+                this.favorites = this.favorites.message
                 this.showFav = true
+                console.log(this.favorites)
+            },
+
+            back : function(){
+                this.showFav = null
             }
         }
     }

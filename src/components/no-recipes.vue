@@ -1,10 +1,10 @@
 <template>
     <v-container
             justify-center
-            ma-0 px-5 fluid text-xs-center>
+            ma-0 fluid text-xs-center>
         <v-layout>
-            <v-flex xs1 md3 sm3></v-flex>
-            <v-flex xs10 md6 sm6
+            <v-flex lg3 xs1 md3 sm3></v-flex>
+            <v-flex lg6 xs10 md6 sm6
             >
                 <v-card
                         class="text-xs-center text"
@@ -17,7 +17,7 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
-            <v-flex xs1 md3 sm3></v-flex>
+            <v-flex lg3s xs1 md3 sm3></v-flex>
         </v-layout>
     </v-container>
 

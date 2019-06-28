@@ -1,6 +1,6 @@
 import axios from 'axios'
-
-const urlPath = 'https://cook-now-2.herokuapp.com/'
+const urlPath = 'http://localhost:4000/'
+// const urlPath = 'https://cook-now-2.herokuapp.com/'
 
 // axios.interceptors.response.use(response => {
 //     return response;
@@ -43,7 +43,7 @@ export async function login( name, pass){
 
 }
 
-export async function addToFav(recipe) {
+export async function addToFav(data) {
     try{
         let res = await axios({
             method: 'post',
@@ -52,7 +52,8 @@ export async function addToFav(recipe) {
                 'Content-type':'application/json',
             },
             data: {
-                recipe : recipe
+                email : data.email,
+                favorite : data.favorite
             }
         })
         return res.data
@@ -109,6 +110,28 @@ export  async function verifyToken( token) {
         }
     }
 
+}
+
+export async function getFavorites( email){
+    try{
+        let res = await axios({
+            method: 'get',
+            url: urlPath + 'user/getFav',
+            headers:{
+                'Content-type':'application/json',
+            },
+            data: {
+                email : email
+            }
+        })
+        return res.data
+    }
+
+    catch( err){
+        return {
+            message : err.message
+        }
+    }
 }
 
 // export async function login( email, pass){

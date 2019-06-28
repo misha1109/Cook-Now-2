@@ -1,16 +1,20 @@
 <template>
     <user-background>
-        <v-flex xs12 px-3>
+        <v-container
+            text-xs-center pa-0 ma-0
+        >
             <div
                     v-if="logged"
             >
-                <v-flex xs12>
+                <v-container
+                    text-xs-center
+                >
                         <user-logged
                             :email = "logged"
                             v-on:sign-out="signout"
                         >
                         </user-logged>
-                </v-flex>
+                </v-container>
             </div>
             <div v-else>
                 <v-flex>
@@ -33,7 +37,7 @@
                 <v-flex xs12>
                     <v-btn v-on:click="login" color="white" round>Sign in</v-btn>
                 </v-flex>
-                <v-flex >
+                <v-flex>
                     <v-btn v-on:click="newAcc" flat >Don't have an account? Sign up</v-btn>
                 </v-flex>
             </div>
@@ -44,7 +48,7 @@
                     <h4 style="text-align: center; color:red">{{ errMsg }}</h4>
                 </v-flex>
             </div>
-        </v-flex>
+        </v-container>
     </user-background>
 </template>
 
