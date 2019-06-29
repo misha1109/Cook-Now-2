@@ -82,9 +82,11 @@
                             v-on:click="back"
                     >Back</v-btn>
                     <v-layout row wrap>
-                        <v-flex v-for="recipe in favorites" v-bind:key="recipe.recipe_id">
+                        <v-flex
+                                v-for="recipe in favorites" v-bind:key="recipe.recipe_id">
                             <recipe-card
-                                    :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title">
+                                    v-on:remove-user-fav="removeFavorite"
+                                    userFavorite="" :publisher_url="recipe.publisher_url" :publisher="recipe.publisher" :rating="recipe.social_rank" :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title" :id="recipe.recipe_id">
                             </recipe-card>
                         </v-flex>
                     </v-layout>
@@ -95,7 +97,7 @@
 
 <script>
     import recipeCard from './recipeCard.vue'
-    import { getFavorites } from '../userAPI/userAPI.js'
+    import { getFavorites, removeFavorite } from '../userAPI/userAPI.js'
     import mockRecipes from "../mockRecipes.js";
 
     export default {
@@ -123,15 +125,23 @@
 
             favClick : async function() {
                 this.favorites = await getFavorites(this.email)
-                this.favorites = this.favorites.message
+                if(this.favorites.message != 'No favorites')
+                    this.favorites = this.favorites.message
+                else
+                    this.favorites = null
                 this.showFav = true
-                console.log(this.favorites)
             },
 
             back : function(){
                 this.showFav = null
+            },
+
+            removeFavorite : async function(id){
+                await removeFavorite(this.email, id)
+                await this.favClick()
             }
-        }
+        },
+
     }
 </script>
 

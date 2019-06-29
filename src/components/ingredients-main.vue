@@ -67,7 +67,7 @@
                         </v-icon>
                     </ingredients-topic>
                 </v-flex>
-                <v-flex>
+                <v-flex pb-4>
                     <search-chosen-ingred v-on:search-chosen="searchChosen"></search-chosen-ingred>
                 </v-flex>
             </v-layout>

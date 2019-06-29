@@ -115,7 +115,7 @@ export  async function verifyToken( token) {
 export async function getFavorites( email){
     try{
         let res = await axios({
-            method: 'get',
+            method: 'post',
             url: urlPath + 'user/getFav',
             headers:{
                 'Content-type':'application/json',
@@ -129,7 +129,7 @@ export async function getFavorites( email){
 
     catch( err){
         return {
-            message : err.message
+            message : 'No favorites'
         }
     }
 }
@@ -147,6 +147,7 @@ export async function removeFavorite(email,id){
                 recipe_id : id
             }
         })
+
         return res.data
     }
 

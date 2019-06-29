@@ -4,7 +4,7 @@
         <v-layout row wrap>
             <v-flex xs1></v-flex>
             <v-flex xs10>
-                <v-card style="background-color: #FDD835; border-radius: 6%">
+                <v-card style="background-color: #FDD835; border-radius: 15px">
                     <v-container pa-0 ma-0 grid fluid text-xs-center>
                         <v-layout row wrap>
                             <v-flex  xs12>

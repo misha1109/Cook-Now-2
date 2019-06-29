@@ -106,6 +106,12 @@
                     </v-snackbar>
                 </div>
             <v-layout row wrap>
+                <v-container
+                        text-xs-center
+                        v-show="loading"
+                >
+                    <loading></loading>
+                </v-container>
                 <v-flex lg3 xs1></v-flex>
                 <v-flex>
                     <v-scale-transition
@@ -117,12 +123,6 @@
                                 <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes" :page="recipePage">
                                 </recipe-search>
                             </v-container>
-
-                                <v-flex
-                                        v-show="loading"
-                                >
-                                    <loading></loading>
-                                </v-flex>
                                 <v-scale-transition>
                                     <v-container py-5 v-if="recipes" fluid grid-list-lg
                                     >
@@ -325,28 +325,31 @@ export default {
       },
 
       findRecipes: async function (ingred) {
-          // if(ingred!=null){
-          //     this.choosenIngred = ingred
-          // }
-          // this.recipes = null
-          // this.loading = true
-          // console.log('searching')
-          // this.recipes = await food2fork({
-          //     q :this.choosenIngred,
-          //     page : this.recipePage
-          // })
-          // if(this.recipes.count==0){
-          //     this.noRecipes = true
-          // }
-          // else if(this.recipes.error=='limit'){
-          //     this.apiLimit = true
-          // }
-          // else if( !this.recipes.recipes){
-          //     this.food2forkDown = true
-          // }
-          // this.loading = false
-          let tempRecipes = mockRecipes
-          this.recipes = await this.filterFavorites(tempRecipes)
+          if(ingred!=null){
+              this.choosenIngred = ingred
+          }
+          this.recipes = null
+          this.loading = true
+          console.log('searching')
+          let tempRecipes = await food2fork({
+              q :this.choosenIngred,
+              page : this.recipePage
+          })
+          if(tempRecipes.count==0){
+              this.noRecipes = true
+          }
+          else if(tempRecipes.error=='limit'){
+              this.apiLimit = true
+          }
+          else if( !tempRecipes.recipes){
+              this.food2forkDown = true
+          }
+          else if(this.signedIn)
+              this.recipes = await this.filterFavorites(tempRecipes)
+          else
+              this.recipes = tempRecipes
+          this.loading = false
+          // let tempRecipes = mockRecipes
       },
 
       changeTab:function(tab){
@@ -417,6 +420,7 @@ export default {
                       recipe.added = false
               })
           }
+          console.log(recipes)
           return recipes
       },
 

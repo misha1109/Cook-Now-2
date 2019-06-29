@@ -6,6 +6,11 @@
                     tile max-width="70vw"
                     color="#ECEFF1"
             >
+                <div v-if="userFavorite">
+                    <v-btn v-on:click="userRemoveFav" flat round>
+                        <v-icon color="red">fas fa-times</v-icon>
+                    </v-btn>
+                </div>
                 <v-img
                         class="lgScreen"
                         :src="pic"
@@ -98,7 +103,8 @@
             publisher_url:String,
             showFav:Boolean,
             added : Boolean,
-            logged:String
+            logged:String,
+            userFavorite: Boolean
         },
 
         methods:{
@@ -145,6 +151,10 @@
                 else{
                     this.favButton  = 'Add to favorites'
                 }
+            },
+
+            userRemoveFav(){
+                this.$emit('remove-user-fav',this.id)
             }
         },
 
