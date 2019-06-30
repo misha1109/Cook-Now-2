@@ -1,6 +1,6 @@
 import axios from 'axios'
-const urlPath = 'http://localhost:4000/'
-// const urlPath = 'https://cook-now-2.herokuapp.com/'
+// const urlPath = 'http://localhost:4000/'
+const urlPath = 'https://cook-now-2.herokuapp.com/'
 
 // axios.interceptors.response.use(response => {
 //     return response;

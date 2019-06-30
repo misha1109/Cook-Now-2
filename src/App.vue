@@ -1,164 +1,167 @@
 <template>
     <v-app>
         <v-content class="backGround">
-        <nav-bar
-                v-show="tab == 'Main'"
-                v-on:changeToHome="changePage"
-                v-on:back = "back"
-                :title="title">
-        </nav-bar>
-            <br>
-            <v-scale-transition
-                    hide-on-leave
-            >
-                <v-flex v-show="title=='Home'"
-                >
-                    <v-container
-                            justify-center
-                            ma-0 pa-0 fluid text-xs-center>
-                        <v-layout row wrap>
-                            <v-flex lg3></v-flex>
-                            <v-flex lg6 xs12>
-                                <cook-now-logo
-                                        height="22vh"
-                                        v-on:changeTab="changeTab"
-                                ></cook-now-logo>
-                                <main-button v-on:changePage="changePage" page="Choose ingredients" text="Choose by ingredients">
-                                </main-button>
-                                <main-button v-on:changePage="changePage" page="Recipe List" text="Free search">
-                                </main-button>
-                                <main-button v-on:changePage="changePage" page="Add" text="Add recipe">
-                                </main-button>
-                            </v-flex>
-                            <v-flex lg3></v-flex>
-
-                        </v-layout>
-                    </v-container>
-                </v-flex>
-            </v-scale-transition>
-                <v-layout row wrap>
-                    <v-flex lg4></v-flex>
-                    <v-scale-transition
-                            hide-on-leave>
-                    <v-flex row wrap lg4 v-if="tab=='About'"
-                            v-on:click="changeTab('Main')"
-                    >
-                        <about
-                        ></about>
-                    </v-flex>
-                    </v-scale-transition>
-                    <v-flex lg4></v-flex>
-                </v-layout>
-            <v-scale-transition
-                    hide-on-leave
-            >
-            <v-layout row wrap>
-                <v-flex lg4></v-flex>
-                <v-flex lg4 v-show="tab == 'User'">
-                    <v-scale-transition
-                            hide-on-leave
-                    >
-                    <user-main
-                            v-if="this.title=='User Main'"
-                            v-on:new-user="changePage('New User')"
-                            v-on:login-success = "loginSuccess"
-                            v-on:login-failed = "loginFailed"
-                            v-on:sign-out = "signOut"
-                            :logged="signedIn"
-                    >
-                    </user-main>
-                    </v-scale-transition>
-                    <v-scale-transition
-                            hide-on-leave
-                    >
-                    <user-new
-                            v-if="this.title=='New User'"
-                            v-on:back-sign-in="changePage('User Main')"
-                            v-on:login-success="loginSuccess"
-                    >
-                    </user-new>
-                    </v-scale-transition>
-                </v-flex>
-                <v-flex lg4></v-flex>
-            </v-layout>
-            </v-scale-transition>
-            <v-scale-transition
-                hide-on-leave
-            >
-                <div v-if="title=='Add' && !recipeAdded">
-                    <div v-if="!signedIn" v-on:click="changeTab('User')">
-                            <no-recipe>
-                                <p>Please sign in to add recipes</p>
-                            </no-recipe>
-                    </div>
-                    <div v-if="!addIngred && signedIn">
-                            <div
-                            >
-                                <add-menu
-                                    v-on:add-ingred='addIngredClick'
-                                ></add-menu>
-                            </div>
-                    </div>
-                    <v-scale-transition>
-                        <div v-if="addIngred">
-                            <add-menu-ingred
-                                    v-on:add-new-recipe="addNewRecipe"
-                            ></add-menu-ingred>
-                        </div>
-                    </v-scale-transition>
-                </div>
-            </v-scale-transition>
-            <v-scale-transition
-                    hide-on-leave
-            >
-                <div
-                        v-if="recipeAdded"
-                        v-on:click="changePage('Home')"
-                >
-                    <no-recipe>
-                        {{ recipeAdded }}
-                    </no-recipe>
-                </div>
-            </v-scale-transition>
-            <v-container pa-0 ma-0 text-xs-center justify-center>
-                <div v-if="addedToFav">
-                    <v-snackbar
-                            :timeout="3000" top color="pink" flat v-model="addedToFav"
-                    >
-                        <v-container text-xs-center pa-0 ma-0>
-                            <h5>
-                                {{ addedToFav }}
-                            </h5>
-                        </v-container>
-                    </v-snackbar>
-                </div>
-            <v-layout row wrap>
-                <v-container
-                        text-xs-center
-                        v-show="loading"
-                >
-                    <loading></loading>
-                </v-container>
-                <v-flex lg3 xs1></v-flex>
-                <v-flex>
-                    <v-scale-transition
-                            hide-on-leave
-                    >
-                        <div v-if="title=='Recipe List'"
+            <v-container pa-0>
+                <v-layout colum wrap>
+                    <v-flex xs12>
+                        <nav-bar
+                                v-show="tab == 'Main'"
+                                v-on:changeToHome="changePage"
+                                v-on:back = "back"
+                                :title="title">
+                        </nav-bar>
+                        <br>
+                        <v-scale-transition
+                                hide-on-leave
                         >
-                            <v-container pa-0 ma-0>
-                                <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes" :page="recipePage">
-                                </recipe-search>
-                            </v-container>
-                                <v-scale-transition>
-                                    <v-container py-5 v-if="recipes" fluid grid-list-lg
-                                    >
-                                                <v-scale-transition
-                                                        group
-                                                        hide-on-leave
+                            <v-flex v-show="title=='Home'"
+                            >
+                                <v-container
+                                        justify-center
+                                        ma-0 pa-0 fluid text-xs-center>
+                                    <v-layout row wrap>
+                                        <v-flex lg3></v-flex>
+                                        <v-flex lg6 xs12>
+                                            <cook-now-logo
+                                                    height="22vh"
+                                                    v-on:changeTab="changeTab"
+                                            ></cook-now-logo>
+                                            <main-button v-on:changePage="changePage" page="Choose ingredients" text="Choose by ingredients">
+                                            </main-button>
+                                            <main-button v-on:changePage="changePage" page="Recipe List" text="Free search">
+                                            </main-button>
+                                            <main-button v-on:changePage="changePage" page="Add" text="Add recipe">
+                                            </main-button>
+                                        </v-flex>
+                                        <v-flex lg3></v-flex>
 
+                                    </v-layout>
+                                </v-container>
+                            </v-flex>
+                        </v-scale-transition>
+                        <v-layout row wrap>
+                            <v-flex lg4></v-flex>
+                            <v-scale-transition
+                                    hide-on-leave>
+                                <v-flex row wrap lg4 v-if="tab=='About'"
+                                        v-on:click="changeTab('Main')"
+                                >
+                                    <about
+                                    ></about>
+                                </v-flex>
+                            </v-scale-transition>
+                            <v-flex lg4></v-flex>
+                        </v-layout>
+                        <v-scale-transition
+                                hide-on-leave
+                        >
+                            <v-layout row wrap>
+                                <v-flex lg4></v-flex>
+                                <v-flex lg4 v-show="tab == 'User'">
+                                    <v-scale-transition
+                                            hide-on-leave
+                                    >
+                                        <user-main
+                                                v-if="this.title=='User Main'"
+                                                v-on:new-user="changePage('New User')"
+                                                v-on:login-success = "loginSuccess"
+                                                v-on:login-failed = "loginFailed"
+                                                v-on:sign-out = "signOut"
+                                                :logged="signedIn"
+                                        >
+                                        </user-main>
+                                    </v-scale-transition>
+                                    <v-scale-transition
+                                            hide-on-leave
+                                    >
+                                        <user-new
+                                                v-if="this.title=='New User'"
+                                                v-on:back-sign-in="changePage('User Main')"
+                                                v-on:login-success="loginSuccess"
+                                        >
+                                        </user-new>
+                                    </v-scale-transition>
+                                </v-flex>
+                                <v-flex lg4></v-flex>
+                            </v-layout>
+                        </v-scale-transition>
+                        <v-scale-transition
+                                hide-on-leave
+                        >
+                            <div v-if="title=='Add' && !recipeAdded">
+                                <div v-if="!signedIn" v-on:click="changeTab('User')">
+                                    <no-recipe>
+                                        <p>Please sign in to add recipes</p>
+                                    </no-recipe>
+                                </div>
+                                <div v-if="!addIngred && signedIn">
+                                    <div
+                                    >
+                                        <add-menu
+                                                v-on:add-ingred='addIngredClick'
+                                        ></add-menu>
+                                    </div>
+                                </div>
+                                <v-scale-transition>
+                                    <div v-if="addIngred">
+                                        <add-menu-ingred
+                                                v-on:add-new-recipe="addNewRecipe"
+                                        ></add-menu-ingred>
+                                    </div>
+                                </v-scale-transition>
+                            </div>
+                        </v-scale-transition>
+                        <v-scale-transition
+                                hide-on-leave
+                        >
+                            <div
+                                    v-if="recipeAdded"
+                                    v-on:click="changePage('Home')"
+                            >
+                                <no-recipe>
+                                    {{ recipeAdded }}
+                                </no-recipe>
+                            </div>
+                        </v-scale-transition>
+                        <v-container pa-0 ma-0 text-xs-center justify-center>
+                            <div v-if="addedToFav">
+                                <v-snackbar
+                                        :timeout="3000" top color="pink" flat v-model="addedToFav"
+                                >
+                                    <v-container text-xs-center pa-0 ma-0>
+                                        <h5>
+                                            {{ addedToFav }}
+                                        </h5>
+                                    </v-container>
+                                </v-snackbar>
+                            </div>
+                            <v-layout row wrap>
+                                <v-container
+                                        text-xs-center
+                                        v-show="loading"
+                                >
+                                    <loading></loading>
+                                </v-container>
+                                <v-flex lg3 xs1></v-flex>
+                                <v-flex>
+                                    <v-scale-transition
+                                            hide-on-leave
+                                    >
+                                        <div v-if="title=='Recipe List'"
+                                        >
+                                            <v-container pa-0 ma-0>
+                                                <recipe-search v-show="recipeFreeSeach" v-on:search-recipe="findRecipes" :page="recipePage">
+                                                </recipe-search>
+                                            </v-container>
+                                            <v-scale-transition>
+                                                <v-container py-5 v-if="recipes" fluid grid-list-lg
                                                 >
-                                                    <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
+                                                    <v-scale-transition
+                                                            group
+                                                            hide-on-leave
+
+                                                    >
+                                                        <div v-for="recipe in recipes.recipes" v-bind:key="recipe.recipe_id">
                                                             <recipe-card :logged="signedIn" :showFav=true :publisher_url="recipe.publisher_url"
                                                                          :publisher="recipe.publisher" :rating="recipe.social_rank"
                                                                          :url="recipe.source_url" :pic="recipe.image_url" :title="recipe.title"
@@ -166,81 +169,85 @@
                                                                          v-on:fav-message="favSnack"
                                                             >
                                                             </recipe-card>
-                                                    </div>
-                                                </v-scale-transition>
-                                                <br>
-                                                <v-btn
-                                                        round
-                                                        color="#FF8A80"
-                                                        v-show="!loading && recipes.recipes"
-                                                        v-on:click="showMore"
-                                                        large bottom>
-                                                    Show more
-                                                </v-btn>
-                                    </v-container>
-                                </v-scale-transition>
-                                <v-scale-transition>
-                                    <v-container
-                                            text-xs-center justify-center
+                                                        </div>
+                                                    </v-scale-transition>
+                                                    <br>
+                                                    <v-btn
+                                                            round
+                                                            color="#FF8A80"
+                                                            v-show="!loading && recipes.recipes"
+                                                            v-on:click="showMore"
+                                                            large bottom>
+                                                        Show more
+                                                    </v-btn>
+                                                </v-container>
+                                            </v-scale-transition>
+                                            <v-scale-transition>
+                                                <v-container
+                                                        text-xs-center justify-center
+                                                >
+                                                    <v-layout row wrap>
+                                                        <v-flex xs12 lg12>
+                                                            <div v-show="noRecipes" v-on:click="back">
+                                                                <no-recipe>
+                                                                    No recipes found
+                                                                    <br>
+                                                                    Choose different ingredients
+                                                                </no-recipe>
+                                                            </div>
+                                                            <div v-show="apiLimit" v-on:click="changePage('Home')">
+                                                                <no-recipe>
+                                                                    Api limit reached
+                                                                    <br>
+                                                                    Try again later
+                                                                </no-recipe>
+                                                            </div>
+                                                            <div v-show="food2forkDown" v-on:click="changePage('Home')">
+                                                                <no-recipe>
+                                                                    <h4 style="color: red;">
+                                                                        Food2Fork server is down
+                                                                    </h4>
+                                                                    No recipes are available.
+                                                                    <br>
+                                                                    Try again later
+                                                                </no-recipe>
+                                                            </div>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                </v-container>
+                                            </v-scale-transition>
+                                        </div>
+                                    </v-scale-transition>
+                                </v-flex>
+                                <v-flex></v-flex>
+                            </v-layout>
+                        </v-container>
+                        <v-container
+                                text-xs-center
+                        >
+                            <v-layout row wrap>
+                                <v-flex lg3></v-flex>
+                                <v-flex lg6 xs12>
+                                    <v-scale-transition
+                                            hide-on-leave
                                     >
-                                        <v-layout row wrap>
-                                            <v-flex xs12 lg12>
-                                                <div v-show="noRecipes" v-on:click="back">
-                                                    <no-recipe>
-                                                        No recipes found
-                                                        <br>
-                                                        Choose different ingredients
-                                                    </no-recipe>
-                                                </div>
-                                                <div v-show="apiLimit" v-on:click="changePage('Home')">
-                                                    <no-recipe>
-                                                        Api limit reached
-                                                        <br>
-                                                        Try again later
-                                                    </no-recipe>
-                                                </div>
-                                                <div v-show="food2forkDown" v-on:click="changePage('Home')">
-                                                    <no-recipe>
-                                                        <h4 style="color: red;">
-                                                            Food2Fork server is down
-                                                        </h4>
-                                                        No recipes are available.
-                                                        <br>
-                                                        Try again later
-                                                    </no-recipe>
-                                                </div>
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-container>
-                                </v-scale-transition>
-                        </div>
-                    </v-scale-transition>
-                </v-flex>
-                <v-flex></v-flex>
-            </v-layout>
-            </v-container>
-            <v-container
-                text-xs-center
-            >
-                <v-layout row wrap>
-                    <v-flex lg3></v-flex>
-                        <v-flex lg6 xs12>
-                            <v-scale-transition
-                                    hide-on-leave
-                            >
-                                <v-container ma-0 py-3 v-if="title=='Choose ingredients'">
-                                    <ingredients-main v-on:final-ingred-added = "findRecipes" v-on:changePage="changePage">
-                                    </ingredients-main>
-                                </v-container>
-                            </v-scale-transition>
-                        </v-flex>
-                    <v-flex lg3></v-flex>
+                                        <v-container ma-0 py-3 v-if="title=='Choose ingredients'">
+                                            <ingredients-main v-on:final-ingred-added = "findRecipes" v-on:changePage="changePage">
+                                            </ingredients-main>
+                                        </v-container>
+                                    </v-scale-transition>
+                                </v-flex>
+                                <v-flex lg3></v-flex>
+                            </v-layout>
+                        </v-container>
+                        <bottom-nav
+                                v-on:change-tab="changeTab"
+                        >
+                        </bottom-nav>
+                    </v-flex>
                 </v-layout>
             </v-container>
-            <bottom-nav
-                v-on:change-tab="changeTab"
-            >
-            </bottom-nav>
+
         </v-content>
     </v-app>
 </template>
