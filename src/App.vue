@@ -83,15 +83,30 @@
             </v-layout>
             </v-scale-transition>
             <v-scale-transition
-                    hide-on-leave
+                hide-on-leave
             >
-                    <div v-show="title=='Add'">
-                        <div v-show="!signedIn" v-on:click="changeTab('User')">
-                                <no-recipe >
-                                    <p>Sign in to add recipes</p>
-                                </no-recipe>
-                        </div>
+                <div v-if="title=='Add'">
+                    <div v-if="!signedIn" v-on:click="changeTab('User')">
+                            <no-recipe >
+                                <p>Please sign in to add recipes</p>
+                            </no-recipe>
                     </div>
+                    <div v-if="!addIngred && signedIn">
+                            <div
+                            >
+                                <add-menu
+                                    v-on:add-ingred='addIngredClick'
+                                ></add-menu>
+                            </div>
+                    </div>
+                    <v-scale-transition>
+                        <div v-if="addIngred">
+                            <add-menu-ingred
+                                    v-on:add-new-recipe="addNewRecipe"
+                            ></add-menu-ingred>
+                        </div>
+                    </v-scale-transition>
+                </div>
             </v-scale-transition>
             <v-container pa-0 ma-0 text-xs-center justify-center>
                 <div v-if="addedToFav">
@@ -139,7 +154,7 @@
                                                                          v-on:fav-message="favSnack"
                                                             >
                                                             </recipe-card>
-\                                                    </div>
+                                                    </div>
                                                 </v-scale-transition>
                                                 <br>
                                                 <v-btn
@@ -232,8 +247,9 @@ import about from './components/about.vue'
 import userMain from './components/user-main.vue'
 import userNew from './components/user-new.vue'
 import cookLogo from './components/cook-now-logo.vue'
-import favSnack from './components/fav-snackbar.vue'
-import { verifyToken, signUp, getFavorites } from './userAPI/userAPI.js'
+import addMenu from './components/add-menu.vue'
+import addMenuIngred from './components/add-menu-ingredients.vue'
+import { verifyToken , getFavorites } from './userAPI/userAPI.js'
 import { eventBus } from './main.js'
 import mockRecipes from "./mockRecipes.js";
 
@@ -256,7 +272,9 @@ export default {
           recipePage: 1,
           choosenIngred : null,
           favorites : null,
-          addedToFav : null
+          addedToFav : null,
+          addIngred : null,
+          newRecipe : null
       }
   },
   components: {
@@ -272,7 +290,8 @@ export default {
       'user-main':userMain,
       'user-new':userNew,
       'cook-now-logo':cookLogo,
-      'fav-snackbar' : favSnack
+      'add-menu' : addMenu,
+      'add-menu-ingred' : addMenuIngred
 
   },
 
@@ -289,6 +308,7 @@ export default {
                   this.recipeFreeSeach = true
                   this.recipePage = 1
                   eventBus.$emit('resetChosen')
+                  this.addIngred = null
                   break;
               case 'Recipe List':
                   if(hideSearch){
@@ -420,17 +440,25 @@ export default {
                       recipe.added = false
               })
           }
-          console.log(recipes)
           return recipes
       },
 
       favSnack(msg){
           this.addedToFav = msg
-          console.log(this.addedToFav)
           setTimeout(() => {
               this.addedToFav = null
-              console.log(this.addedToFav)
           }, 2500)
+      },
+
+      addIngredClick( ...newRecipeData){
+          console.log(newRecipeData)
+          this.addIngred = true
+          this.newRecipe = newRecipeData
+      },
+
+      addNewRecipe( ingred){
+          this.newRecipe.push(ingred)
+          console.log(this.newRecipe)
       }
 
   }

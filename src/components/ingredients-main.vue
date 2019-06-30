@@ -67,8 +67,15 @@
                         </v-icon>
                     </ingredients-topic>
                 </v-flex>
-                <v-flex pb-4>
+                <v-flex pb-4 v-if="!ingredForNew">
                     <search-chosen-ingred v-on:search-chosen="searchChosen"></search-chosen-ingred>
+                </v-flex>
+                <v-flex v-else>
+                    <v-btn
+                            v-on:click="addRecipe"
+                            round>
+                        Finish and upload
+                    </v-btn>
                 </v-flex>
             </v-layout>
             </v-flex>
@@ -91,14 +98,24 @@
                 ingredients: ingreNames,
                 ingredChosen:[],
                 snackMsg:null,
-                msgToSnack:false
+                msgToSnack:false,
             }
         },
+
+        props : {
+            ingredForNew : Boolean
+        },
+
         methods:{
             searchChosen:function () {
                 this.$emit('changePage','Recipe List',true)
                 this.$emit('final-ingred-added',this.ingredChosen)
             },
+
+            addRecipe : function(){
+                this.$emit('add-new-recipe',this.ingredChosen)
+            },
+
             addIngred:async function(ingred){
                 let found = this.ingredChosen.findIndex( el => {
                     return el === ingred
