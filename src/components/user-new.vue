@@ -1,6 +1,9 @@
 <template>
     <user-background>
-        <v-flex
+        <v-container v-if="loading">
+            <loading></loading>
+        </v-container>
+        <v-flex v-else
         >
             <div
             >
@@ -49,6 +52,8 @@
 
 <script>
     import userBack from './user-background.vue'
+    import loading from './loading.vue'
+
     import { signUp, login } from '../userAPI/userAPI.js'
 
     export default {
@@ -59,11 +64,14 @@
                 email:null,
                 pass:null,
                 confPass:null,
-                errMsg:null
+                errMsg:null,
+                loading : null
+
             }
         },
         components:{
-            'user-background':userBack
+            'user-background':userBack,
+            'loading' : loading
         },
         methods:{
             signIn:function () {
@@ -94,6 +102,7 @@
                 }
 
                 else if( this.pass == this.confPass){
+                    this.loading = true
                     const msg = await signUp( this.email, this.pass).then( res => {
                         if(res.message != 'Sign up error')
                         {
@@ -122,6 +131,7 @@
                     else{
                         this.showErr(msg)
                     }
+                    this.loading = false
                 }
 
                 else{

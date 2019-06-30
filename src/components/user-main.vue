@@ -1,6 +1,9 @@
 <template>
     <user-background>
-        <v-container
+        <v-container v-if="loading">
+            <loading></loading>
+        </v-container>
+        <v-container v-else
             text-xs-center pa-0 ma-0
         >
             <div
@@ -60,6 +63,7 @@
 <script>
     import userBack from './user-background.vue'
     import userLogged from './user-logged-menu.vue'
+    import loading from './loading.vue'
     import { login } from '../userAPI/userAPI.js'
 
     export default {
@@ -68,7 +72,8 @@
             return {
                 email:null,
                 pass:null,
-                errMsg: null
+                errMsg: null,
+                loading : null
             }
         },
         props:{
@@ -77,7 +82,8 @@
 
         components:{
             'user-background':userBack,
-            'user-logged': userLogged
+            'user-logged': userLogged,
+            'loading' : loading
         },
 
         methods:{
@@ -86,11 +92,13 @@
             },
 
             login:function(){
+                this.loading = true
                 const email = this.email
                 login( email, this.pass).then( res => {
                     if(res.message == "Auth successful"){
                         this.$emit('login-success',res.token,  email )
                         this.errMsg = null
+                        this.loading = null
                     }
                     else{
                         this.errMsg = res.message

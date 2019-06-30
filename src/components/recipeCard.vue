@@ -11,6 +11,11 @@
                         <v-icon color="red">fas fa-times</v-icon>
                     </v-btn>
                 </div>
+                <div v-if="userAdded">
+                    <v-btn v-on:click="userRemoveAdded" flat round>
+                        <v-icon color="red">fas fa-times</v-icon>
+                    </v-btn>
+                </div>
                 <v-img
                         class="lgScreen"
                         :src="pic"
@@ -104,7 +109,8 @@
             showFav:Boolean,
             added : Boolean,
             logged:String,
-            userFavorite: Boolean
+            userFavorite: Boolean,
+            userAdded : Boolean
         },
 
         methods:{
@@ -155,6 +161,10 @@
 
             userRemoveFav(){
                 this.$emit('remove-user-fav',this.id)
+            },
+
+            userRemoveAdded(){
+                this.$emit('user-remove-added',this.title)
             }
         },
 

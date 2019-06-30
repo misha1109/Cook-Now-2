@@ -85,9 +85,9 @@
             <v-scale-transition
                 hide-on-leave
             >
-                <div v-if="title=='Add'">
+                <div v-if="title=='Add' && !recipeAdded">
                     <div v-if="!signedIn" v-on:click="changeTab('User')">
-                            <no-recipe >
+                            <no-recipe>
                                 <p>Please sign in to add recipes</p>
                             </no-recipe>
                     </div>
@@ -108,15 +108,27 @@
                     </v-scale-transition>
                 </div>
             </v-scale-transition>
+            <v-scale-transition
+                    hide-on-leave
+            >
+                <div
+                        v-if="recipeAdded"
+                        v-on:click="changePage('Home')"
+                >
+                    <no-recipe>
+                        {{ recipeAdded }}
+                    </no-recipe>
+                </div>
+            </v-scale-transition>
             <v-container pa-0 ma-0 text-xs-center justify-center>
                 <div v-if="addedToFav">
                     <v-snackbar
                             :timeout="3000" top color="pink" flat v-model="addedToFav"
                     >
                         <v-container text-xs-center pa-0 ma-0>
-                            <h4>
+                            <h5>
                                 {{ addedToFav }}
-                            </h4>
+                            </h5>
                         </v-container>
                     </v-snackbar>
                 </div>
@@ -249,7 +261,7 @@ import userNew from './components/user-new.vue'
 import cookLogo from './components/cook-now-logo.vue'
 import addMenu from './components/add-menu.vue'
 import addMenuIngred from './components/add-menu-ingredients.vue'
-import { verifyToken , getFavorites } from './userAPI/userAPI.js'
+import { verifyToken , getFavorites, addToAdded } from './userAPI/userAPI.js'
 import { eventBus } from './main.js'
 import mockRecipes from "./mockRecipes.js";
 
@@ -274,7 +286,8 @@ export default {
           favorites : null,
           addedToFav : null,
           addIngred : null,
-          newRecipe : null
+          newRecipe : null,
+          recipeAdded : false
       }
   },
   components: {
@@ -333,6 +346,7 @@ export default {
           this.noRecipes = false
           this.apiLimit = false
           this.food2forkDown = false
+          this.recipeAdded = false
           window.scrollTo(0,0)
 
       },
@@ -450,15 +464,22 @@ export default {
           }, 2500)
       },
 
-      addIngredClick( ...newRecipeData){
-          console.log(newRecipeData)
+      addIngredClick( newRecipeData){
+          this.newRecipe = {}
           this.addIngred = true
-          this.newRecipe = newRecipeData
+          this.newRecipe.data = newRecipeData
       },
 
-      addNewRecipe( ingred){
-          this.newRecipe.push(ingred)
-          console.log(this.newRecipe)
+      async addNewRecipe( ingred){
+          this.newRecipe.data.ingredients = ingred
+          this.newRecipe.email = this.signedIn
+          let response = await addToAdded(this.newRecipe)
+          if(response.message != 'Server error'){
+                this.recipeAdded = 'Recipe added to your user profile'
+          }
+          else{
+              this.recipeAdded = 'Some error occurred while adding the recipe. Please try again.'
+          }
       }
 
   }

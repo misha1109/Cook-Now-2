@@ -42,6 +42,7 @@
                                 </v-flex>
                                 <v-flex xs12>
                                     <v-btn class="btns" color="#90CAF9" xs6
+                                           v-on:click="addedClick"
                                     >
                                         <v-layout row wrap>
                                             <v-flex xs12>
@@ -92,12 +93,34 @@
                     </v-layout>
                 </v-container>
             </v-scale-transition>
+            <v-scale-transition
+                    hide-on-leave
+            >
+                <v-container
+                        v-if="showAdd"
+                        grid-list-sm text-xs-center text
+                >
+                    <v-btn
+                            style="position: sticky" round
+                            v-on:click="back"
+                    >Back</v-btn>
+                    <v-layout row wrap>
+                        <v-flex
+                                v-for="recipe in added" v-bind:key="recipe.name * Math.random()">
+                            <recipe-card
+                                    v-on:user-remove-added="removeUserAdded"
+                                    userAdded="" :publisher="recipe.publisher" :url="recipe.url" :pic="recipe.imgUrl" :title="recipe.name">
+                            </recipe-card>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-scale-transition>
         </v-container>
 </template>
 
 <script>
     import recipeCard from './recipeCard.vue'
-    import { getFavorites, removeFavorite } from '../userAPI/userAPI.js'
+    import { getFavorites, removeFavorite, getAdded, removeAdded } from '../userAPI/userAPI.js'
     import mockRecipes from "../mockRecipes.js";
 
     export default {
@@ -106,7 +129,8 @@
             return {
                 showFav : false,
                 showAdd : false,
-                favorites : null
+                favorites : null,
+                added : null
             }
         },
 
@@ -134,11 +158,27 @@
 
             back : function(){
                 this.showFav = null
+                this.showAdd = null
             },
 
             removeFavorite : async function(id){
                 await removeFavorite(this.email, id)
                 await this.favClick()
+            },
+
+            addedClick : async function() {
+                this.added = await getAdded(this.email)
+                if(this.added.message != 'No added')
+                    this.added = this.added.message
+                else
+                    this.added = null
+                this.showAdd = true
+            },
+
+            removeUserAdded : async function(title){
+                console.log(title)
+                await removeAdded(this.email,title)
+                await this.addedClick()
             }
         },
 

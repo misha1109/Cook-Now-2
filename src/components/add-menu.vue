@@ -80,7 +80,12 @@
             showIngred : function () {
                 if(this.name && this.url && this.publisher && this.imgUrl){
                     this.errorMsg = null
-                    this.$emit('add-ingred', this.name , this.url , this.publisher , this.imgUrl)
+                    this.$emit('add-ingred', {
+                        name : this.name,
+                        url : this.url,
+                        publisher : this.publisher,
+                        imgUrl : this.imgUrl
+                    })
                 }
 
                 else {

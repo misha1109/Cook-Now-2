@@ -1,6 +1,6 @@
 import axios from 'axios'
-// const urlPath = 'http://localhost:4000/'
-const urlPath = 'https://cook-now-2.herokuapp.com/'
+const urlPath = 'http://localhost:4000/'
+// const urlPath = 'https://cook-now-2.herokuapp.com/'
 
 // axios.interceptors.response.use(response => {
 //     return response;
@@ -145,6 +145,75 @@ export async function removeFavorite(email,id){
             data: {
                 email : email,
                 recipe_id : id
+            }
+        })
+
+        return res.data
+    }
+
+    catch( err){
+        return {
+            message : err.message
+        }
+    }
+}
+
+export async function addToAdded(data) {
+    try{
+        let res = await axios({
+            method: 'post',
+            url: urlPath + 'user/addToAdded',
+            headers:{
+                'Content-type':'application/json',
+            },
+            data: {
+                email : data.email,
+                data : data.data
+            }
+        })
+        return res.data
+    }
+
+    catch ( err) {
+        return {
+            message : 'Server error'
+        }
+    }
+}
+
+export async function getAdded( email){
+    try{
+        let res = await axios({
+            method: 'post',
+            url: urlPath + 'user/getAdded',
+            headers:{
+                'Content-type':'application/json',
+            },
+            data: {
+                email : email
+            }
+        })
+        return res.data
+    }
+
+    catch( err){
+        return {
+            message : 'No added'
+        }
+    }
+}
+
+export async function removeAdded(email,title){
+    try{
+        let res = await axios({
+            method: 'post',
+            url: urlPath + 'user/deleteAdded',
+            headers:{
+                'Content-type':'application/json',
+            },
+            data: {
+                email : email,
+                title : title
             }
         })
 
