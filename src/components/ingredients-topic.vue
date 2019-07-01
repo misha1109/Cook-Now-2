@@ -5,7 +5,7 @@
                     style="border-radius: 18px"
                     :color="active"
             >
-                <v-card-text row class="text-xs-center"s>
+                <v-card-text row class="text-xs-center">
                     <v-container  grid-list-xs
                                   v-on:click="animate"
                     >

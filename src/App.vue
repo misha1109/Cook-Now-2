@@ -371,7 +371,6 @@ export default {
           }
           this.recipes = null
           this.loading = true
-          console.log('searching')
           let tempRecipes = await food2fork({
               q :this.choosenIngred,
               page : this.recipePage

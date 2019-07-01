@@ -228,21 +228,3 @@ export async function removeAdded(email,title){
 }
 
 
-// export async function login( email, pass){
-//     // fetch('https://jsonplaceholder.typicode.com/posts',{
-//     //     method:'POST'
-//     // })
-//     //     .then(response => response.json())
-//     //     .then(json => console.log(json))
-//     fetch('https://jsonplaceholder.typicode.com/posts', {
-//         method:'POST',
-//         headers:{
-//             'Content-Type': 'application/json'
-//         },
-//         mode:'no-cors',
-//         body: {
-//             "email": email,
-//             "password": pass
-//         }
-//         }).then( res => JSON.stringify(res)).then(res => console.log(res))
-// }

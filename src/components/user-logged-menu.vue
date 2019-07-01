@@ -176,7 +176,6 @@
             },
 
             removeUserAdded : async function(title){
-                console.log(title)
                 await removeAdded(this.email,title)
                 await this.addedClick()
             }

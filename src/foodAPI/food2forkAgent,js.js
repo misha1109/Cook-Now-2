@@ -15,7 +15,7 @@ const getRecipes =async (options) =>{
         .then(function (response) {
             reply = response.data;
         })
-        .catch(function (error) {
+        .catch(function () {
             reply = 'food2fork api request timed-out';
         })
     return reply
