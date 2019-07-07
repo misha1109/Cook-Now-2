@@ -48,7 +48,7 @@
 </template>
 
 <script>
-    import cookLogo from './cook-now-logo.vue'
+    import cookLogo from '../misc/cook-now-logo.vue'
 
     export default {
         name: 'about.vue',

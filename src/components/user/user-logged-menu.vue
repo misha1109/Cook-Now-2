@@ -119,9 +119,9 @@
 </template>
 
 <script>
-    import recipeCard from './recipeCard.vue'
-    import { getFavorites, removeFavorite, getAdded, removeAdded } from '../userAPI/userAPI.js'
-    import mockRecipes from "../mockRecipes.js";
+    import recipeCard from '../recipes/recipeCard.vue'
+    import { getFavorites, removeFavorite, getAdded, removeAdded } from '../../userAPI/userAPI.js'
+    import mockRecipes from "../../mockRecipes.js";
 
     export default {
         name: "user-logged-menu.vue",

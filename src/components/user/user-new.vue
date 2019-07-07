@@ -52,9 +52,9 @@
 
 <script>
     import userBack from './user-background.vue'
-    import loading from './loading.vue'
+    import loading from '../main/loading.vue'
 
-    import { signUp, login } from '../userAPI/userAPI.js'
+    import { signUp, login } from '../../userAPI/userAPI.js'
 
     export default {
 

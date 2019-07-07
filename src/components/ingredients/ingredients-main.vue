@@ -86,9 +86,9 @@
 
 <script>
     import ingredTopic from "./ingredients-topic.vue"
-    import ingreNames from '../assets/ingredNames.js'
-    import {eventBus} from '../main.js'
-    import searchChosen from'./search-chosen-btn'
+    import ingreNames from '../../assets/ingredNames.js'
+    import {eventBus} from '../../main.js'
+    import searchChosen from '../main/search-chosen-btn'
     import ingredSnackbar from './ingred-snackbar.vue'
 
     export default {

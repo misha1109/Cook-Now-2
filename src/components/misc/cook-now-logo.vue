@@ -25,7 +25,7 @@
             }
         },
         created() {
-            this.img = require('../../public/chef_logo.png')
+            this.img = require('../../../public/chef_logo.png')
         }
     }
 </script>

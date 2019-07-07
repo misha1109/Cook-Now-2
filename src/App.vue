@@ -14,14 +14,17 @@
                         <v-scale-transition
                                 hide-on-leave
                         >
-                            <v-flex v-show="title=='Home'"
+                            <v-flex
+                                    v-show="title=='Home'"
                             >
                                 <v-container
                                         justify-center
                                         ma-0 pa-0 fluid text-xs-center>
                                     <v-layout row wrap>
                                         <v-flex lg3></v-flex>
-                                        <v-flex lg6 xs12>
+                                        <v-flex lg6 xs12
+                                                style="height : 70vh;"
+                                        >
                                             <cook-now-logo
                                                     height="22vh"
                                                     v-on:changeTab="changeTab"
@@ -47,6 +50,7 @@
                                         v-on:click="changeTab('Main')"
                                 >
                                     <about
+                                            style="height:  50vh"
                                     ></about>
                                 </v-flex>
                             </v-scale-transition>
@@ -253,21 +257,21 @@
 </template>
 
 <script>
-import mainButton from './components/main-page.vue'
-import navBar from './components/nav-bar.vue'
-import bottomNavBar from './components/botton-nav.vue'
-import recipeSearch from './components/recipeSearch.vue'
-import recipeCard from './components/recipeCard.vue'
+import mainButton from './components/main/main-page.vue'
+import navBar from './components/navigation/nav-bar.vue'
+import bottomNavBar from './components/navigation/botton-nav.vue'
+import recipeSearch from './components/recipes/recipeSearch.vue'
+import recipeCard from './components/recipes/recipeCard.vue'
 import food2fork from './foodAPI/food2forkAgent,js'
-import ingredMain from './components/ingredients-main.vue'
-import loading from './components/loading.vue'
-import noRecipe from './components/no-recipes.vue'
-import about from './components/about.vue'
-import userMain from './components/user-main.vue'
-import userNew from './components/user-new.vue'
-import cookLogo from './components/cook-now-logo.vue'
-import addMenu from './components/add-menu.vue'
-import addMenuIngred from './components/add-menu-ingredients.vue'
+import ingredMain from './components/ingredients/ingredients-main.vue'
+import loading from './components/main/loading.vue'
+import noRecipe from './components/misc/no-recipes.vue'
+import about from './components/about/about.vue'
+import userMain from './components/user/user-main.vue'
+import userNew from './components/user/user-new.vue'
+import cookLogo from './components/misc/cook-now-logo.vue'
+import addMenu from './components/addRecipe/add-menu.vue'
+import addMenuIngred from './components/addRecipe/add-menu-ingredients.vue'
 import { verifyToken , getFavorites, addToAdded } from './userAPI/userAPI.js'
 import { eventBus } from './main.js'
 import mockRecipes from "./mockRecipes.js";

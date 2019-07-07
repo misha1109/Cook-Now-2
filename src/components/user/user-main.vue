@@ -63,8 +63,8 @@
 <script>
     import userBack from './user-background.vue'
     import userLogged from './user-logged-menu.vue'
-    import loading from './loading.vue'
-    import { login } from '../userAPI/userAPI.js'
+    import loading from '../main/loading.vue'
+    import { login } from '../../userAPI/userAPI.js'
 
     export default {
         name: "user-main.vue",

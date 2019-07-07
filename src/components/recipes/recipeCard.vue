@@ -88,7 +88,7 @@
 </template>
 
 <script>
-    import { addToFav,removeFavorite } from '../userAPI/userAPI.js'
+    import { addToFav,removeFavorite } from '../../userAPI/userAPI.js'
 
     export default {
         name: "recipeCard.vue",

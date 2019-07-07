@@ -20,7 +20,7 @@
 <script>
 
     import addBack from './add-menu-background.vue'
-    import  ingredMain from './ingredients-main.vue'
+    import  ingredMain from '../ingredients/ingredients-main.vue'
 
     export default {
         name: "add-menu-ingredients.vue",
