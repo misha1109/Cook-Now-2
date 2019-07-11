@@ -1,5 +1,11 @@
 # Cook Now 2
 
+## Use the application online
+https://misha1109.github.io/Cook-Now-2/
+```
+Recommended to view in mobile mode using the chrome developer tool
+```
+
 ## Project setup
 ```
 npm install
@@ -14,7 +20,7 @@ npm run serve
 ```
 npm run build
 ```
-## Cook Now 2
+## Features 
 ```
 Cook Now 2 is a single page web application that allows you to find recipes from multiple publishers 
 and websites by the choosing the ingredients the recip must contain.
