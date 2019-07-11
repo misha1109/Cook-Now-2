@@ -24,11 +24,10 @@ Cook Now 2 is built using Vue framework, JavaScript, CSS3 and HTML.
 Server side implemented using exprees js and MongoDB. Deployed to Heroku.
 ```
 ### Search for recipes by choosing the ingredients 
-![Alt text](./readme/ChooseByIngred.jpg?raw=true)
+![findRecipeByIngred](https://user-images.githubusercontent.com/33226571/61025519-b99f1a80-a3b9-11e9-8a81-c7c7d41dc55c.gif)
 ### Sign up
-![Alt text](./readme/createAccount.jpg?raw=true)
+![signUp](https://user-images.githubusercontent.com/33226571/61025667-139fe000-a3ba-11e9-9bca-6120df623cb6.gif)
 ### Add recipes to your favorites
-![Alt text](./readme/favoriteRecipe.jpg?raw=true)
+![addToFavorites](https://user-images.githubusercontent.com/33226571/61025604-f1a65d80-a3b9-11e9-80b0-4ec487426c99.gif)
 ### Add your own recipes to the data base
-![Alt text](./readme/addRecipe.jpg?raw=true)
-
+![addRecipe](https://user-images.githubusercontent.com/33226571/61025686-1bf81b00-a3ba-11e9-973d-bec0071d46d8.gif)
